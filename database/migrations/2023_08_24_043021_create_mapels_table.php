@@ -15,7 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('kodemapel');
             $table->string('mapel');
+            $table->unsignedBigInteger('kelas_id'); 
             $table->timestamps();
+
+            $table->foreign('kelas_id')
+            ->references('id')
+            ->on('kelas')
+            ->onDelete('cascade');
+
         });
     }
 
