@@ -13,6 +13,7 @@ use App\Http\Controllers\C_mapel;
 use App\Http\Controllers\C_tahunpel;
 use App\Http\Controllers\C_kelas;
 use App\Http\Controllers\C_admin;
+use App\Http\Controllers\C_Prisensi_harian;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,6 +118,10 @@ Route::middleware(['checkrole:1'])->group(function (){
     Route::Post('/presensi/get-kelas', [C_absensi::class, 'index'])->name('get.kelas'); 
     Route::Post('/presensi/get-mapel', [C_absensi::class, 'selectMapel'])->name('get.mapel'); 
     Route::Post('/presensi/simpan-prisensi', [C_absensi::class, 'simpanData'])->name('simpan.prisensi'); 
+    
+    Route::get('/presensi/harian', [C_Prisensi_harian::class, 'index'])->name('presensi.harian');
+    Route::Post('/presensi/get-siswa', [C_Prisensi_harian::class, 'getSiswa'])->name('get.siswa'); 
+    Route::Post('/presensi/simpan-prisensi-siswa', [C_Prisensi_harian::class, 'storeData'])->name('simpan.prisensi.siswa'); 
 
     Route::get('/adminacc', [C_admin::class, 'admin'])->name('admin');
 

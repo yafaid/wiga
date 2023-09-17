@@ -23,10 +23,10 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Presensi</h4>
+                            <h4>Presensi Harian</h4>
                         </div>
                         <div class="card-body">
-                            Masukkan Mapel,Tanggal dan Kelas
+                            Masukkan Tanggal dan Kelas
                         </div>
                     </div>
                 </div>
@@ -36,13 +36,13 @@
         <form method="POST" action="{{ route('presensi.add') }}" id="form_prisensi">
             @csrf
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="tanggal">Tanggal:</label>
                         <input type="date" name="tanggal" id="tanggal" class="form-control" onchange="tanggalChange()">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="tanggal">Kelas:</label>
                         <select class="form-control select2" name="kode_kelas" id="kode_kelas" onchange="changeKelas(this.value)">
@@ -50,14 +50,6 @@
                             @foreach ($kelas as $row)
                             <option value="{{$row->id}}">{{$row->kodekelas}} - {{ $row->jurusan->nama }}</option>
                             @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="tanggal">Mapel:</label>
-                        <select class="form-control select2 " name="kode_mapel" id="kode_mapel" onchange="changeMapel(this.value)">
-                            <option value="">-- Pilih Mapel --</option>
                         </select>
                     </div>
                 </div>
@@ -82,98 +74,56 @@
     </div>
 
     <script>
-    $(document).ready(function() {
-        $('.select2').select2();
-    });
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
 
-    $('#tanggal').on('change', function(){
-        $('#kode_kelas').val('').trigger('change.select2');;
-        $('#kode_mapel').val('').trigger('change.select2');;
-    });
-
-    function changeKelas(val){
-        var tanggal = $('#tanggal').val();
-                
-        if(tanggal == ''){
-                Swal.fire({
-                            title: 'Error!!',
-                            text: 'Tanggal tidak boleh kosong',
-                            icon: 'error',
-                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                            showConfirmButton: false // Menyembunyikan tombol OK
-                        });
-                        $('#kode_kelas').val(''); // Change the value or make some change to the internal state
-                return;
-            }
-        $.ajax({
-                    url: "{{ route('get.mapel') }}",
-                    method: 'POST',
-                    beforeSend: function() {
+        $('#tanggal').on('change', function(){
+            $('#kode_kelas').val('').trigger('change.select2');
+        });
+        function changeKelas(val){
+            var tanggal = $('#tanggal').val();
+                    
+            if(tanggal == ''){
+                    Swal.fire({
+                                title: 'Error!!',
+                                text: 'Tanggal tidak boleh kosong',
+                                icon: 'error',
+                                timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                                showConfirmButton: false // Menyembunyikan tombol OK
+                            });
+                            $('#kode_kelas').val(''); // Change the value or make some change to the internal state
+                    return;
+                }
+            $.ajax({
+                        url: "{{ route('get.siswa') }}",
+                        method: 'POST',
+                        beforeSend: function() {
                             $('#loading').show();
                         },
-                    data: {
-                        tanggal: tanggal,
-                        kelas_id: val,
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
+                        data: {
+                            tanggal: tanggal,
+                            kelas_id: val,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
 
-                        $('#tbody').html('');
-                        $('#kode_mapel').html(response.data);
-                        $('#loading').hide();
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            title: 'Error!!',
-                            text: errorMessage,
-                            icon: 'error',
-                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                            showConfirmButton: false // Menyembunyikan tombol OK
-                        });
-                    }
-                });
+                            $('#tbody').html(response.data);
+                            $('#loading').hide();
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                title: 'Error!!',
+                                text: errorMessage,
+                                icon: 'error',
+                                timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                                showConfirmButton: false // Menyembunyikan tombol OK
+                            });
+                        }
+                    });
             }
 
-    function changeMapel(val)
-    {
-        var tanggal = $('#tanggal').val();
-        var kode_kelas = $('#kode_kelas').val();
-
-
-          $.ajax({
-                    url: "{{ route('get.kelas') }}",
-                    method: 'POST',
-                    beforeSend: function() {
-                            $('#loading').show();
-                        },
-                    data: {
-                        tanggal: tanggal,
-                        kelas_id: kode_kelas,
-                        mapel: val,
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-
-                        $('#tbody').html(response.data);
-                        $('#loading').hide();
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            title: 'Error!!',
-                            text: errorMessage,
-                            icon: 'error',
-                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                            showConfirmButton: false // Menyembunyikan tombol OK
-                        });
-                    }
-                });
-    }
-      
-
-    </script>
-
-    <script>
-        function buttonPrisensi(id)
+            function buttonPrisensi(id)
         {
             var mapel = $('#kode_mapel').val();
             var kode_kelas = $('#kode_kelas').val();
@@ -190,7 +140,7 @@
                 return;
             }
                     $.ajax({
-                            url: "{{ route('simpan.prisensi') }}",
+                            url: "{{ route('simpan.prisensi.siswa') }}",
                             method: "POST",
                             data:  {
                                 status: id,
@@ -215,6 +165,8 @@
 
         }
     </script>
+
+    
 
 
 @endsection
