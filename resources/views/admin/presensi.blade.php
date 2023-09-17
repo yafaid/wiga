@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <form method="POST" action="{{ route('presensi.add') }}">
+        <form method="POST" action="{{ route('presensi.add') }}" id="form_prisensi">
             @csrf
             <div class="row">
                 <div class="col-md-4">
@@ -48,7 +48,7 @@
                         <select class="select22" name="kode_kelas" id="kode_kelas">
                             <option value="">-- Pilih Kode Kelas --</option>
                             @foreach ($kelas as $row)
-                            <option value="{{$row->id}}">{{$row->kodekelas}} - {{ $row->jurusan->kodejur }}</option>
+                            <option value="{{$row->id}}">{{$row->kodekelas}} - {{ $row->jurusan->nama }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -56,10 +56,10 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="tanggal">Mapel:</label>
-                        <select class="select22" name="kode_mapel">
+                        <select class="select22" name="kode_mapel" id="kode_mapel">
                             <option value="">-- Pilih Mapel --</option>
                             @foreach ($mapel as $row)
-                            <option value="{{$row->kodemapel}}">{{$row->kodemapel}}</option>
+                            <option value="{{$row->id}}">{{$row->mapel}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -81,28 +81,26 @@
                     
                 </tbody>
             </table>
-            <button type="submit">Simpan</button>
         </form>
     </div>
 
     <script>
-       $('#kode_kelas').on( "change", function() {
+    $('#kode_kelas').on( "change", function() {
         var val = $( this ).val();
+        var tanggal = $('#tanggal').val();
+        var mapel = $('#kode_mapel').val();
 
         $.ajax({
                     url: "{{ route('get.kelas') }}",
                     method: 'POST',
                     data: {
+                        tanggal: tanggal,
                         kelas_id: val,
                         _token: $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
-                        
-                        // $.each(response.data,function(index,obj){
-                        //     console.log(obj.);
-                        // });
-                        $('#tbody').html(response.data);
 
+                        $('#tbody').html(response.data);
                     },
                     error: function(xhr, status, error) {
                         Swal.fire({
@@ -116,18 +114,50 @@
                 });
         
       
-        } );
+    });
+    </script>
 
-        function disabledBox(kondisi)
+    <script>
+        function buttonPrisensi(id)
         {
-            switch (key) {
-                case value:
-                    
-                    break;
-            
-                default:
-                    break;
+            var mapel = $('#kode_mapel').val();
+            var kode_kelas = $('#kode_kelas').val();
+            var tanggal = $('#tanggal').val();
+
+            if(mapel == '' || kode_kelas == '' || tanggal == ''){
+                Swal.fire({
+                            title: 'Error!!',
+                            text: 'pastikan form sudah terisi semua',
+                            icon: 'error',
+                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                            showConfirmButton: false // Menyembunyikan tombol OK
+                        });
+                return;
             }
+                    $.ajax({
+                            url: "{{ route('simpan.prisensi') }}",
+                            method: "POST",
+                            data:  {
+                                status: id,
+                                mapel: mapel,
+                                kode_kelas: kode_kelas,
+                                tanggal: tanggal,
+                                 _token: $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(data) {
+                                
+                            },
+                            error: function(data){
+                                Swal.fire({
+                                    title: 'Error!!',
+                                    text: errorMessage,
+                                    icon: 'error',
+                                    timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                                    showConfirmButton: false // Menyembunyikan tombol OK
+                                });
+                            }
+                        });
+
         }
     </script>
 

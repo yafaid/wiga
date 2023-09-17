@@ -107,5 +107,6 @@ Route::middleware(['checkrole:1'])->group(function (){
     Route::get('/presensi', [AdminController::class, 'presensi'])->name('presensi');
     Route::post('/presensi', [AdminController::class, 'storePresensi'])->name('presensi.add'); 
     Route::Post('/presensi/get-kelas', [C_absensi::class, 'index'])->name('get.kelas'); 
+    Route::Post('/presensi/simpan-prisensi', [C_absensi::class, 'simpanData'])->name('simpan.prisensi'); 
 
 });
