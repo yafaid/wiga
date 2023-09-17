@@ -88,6 +88,18 @@
 
     function changeKelas(val){
         var tanggal = $('#tanggal').val();
+                
+        if(tanggal == ''){
+                Swal.fire({
+                            title: 'Error!!',
+                            text: 'Tanggal tidak boleh kosong',
+                            icon: 'error',
+                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                            showConfirmButton: false // Menyembunyikan tombol OK
+                        });
+                        $('#kode_kelas').val(''); // Change the value or make some change to the internal state
+                return;
+            }
         $.ajax({
                     url: "{{ route('get.mapel') }}",
                     method: 'POST',
@@ -117,13 +129,14 @@
         var tanggal = $('#tanggal').val();
         var kode_kelas = $('#kode_kelas').val();
 
-        console.log(kode_kelas);
+
           $.ajax({
                     url: "{{ route('get.kelas') }}",
                     method: 'POST',
                     data: {
                         tanggal: tanggal,
                         kelas_id: kode_kelas,
+                        mapel: val,
                         _token: $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
