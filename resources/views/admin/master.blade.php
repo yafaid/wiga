@@ -147,7 +147,7 @@
                             </ul>
                         </li>
                         <li class="menu-header">Data Admin</li>
-                        <li><a class="nav-link" href="credits.html"><i class="fas fa-user"></i>
+                        <li><a class="nav-link" href="{{ route('admin') }}"><i class="fas fa-user"></i>
                                 <span>Admin</span></a></li>
                     </ul>
                 </aside>

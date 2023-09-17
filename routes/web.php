@@ -4,8 +4,16 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;   
-use App\Http\Controllers\JurusanController;   
 use App\Http\Controllers\C_absensi;
+use App\Http\Controllers\C_siswa;
+use App\Http\Controllers\C_gm;
+use App\Http\Controllers\C_guru;
+use App\Http\Controllers\C_jurusan;
+use App\Http\Controllers\C_mapel;
+use App\Http\Controllers\C_tahunpel;
+use App\Http\Controllers\C_kelas;
+use App\Http\Controllers\C_admin;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,38 +48,38 @@ Route::middleware(['checkrole:1'])->group(function (){
     
     
     //KELAS
-    Route::get('/kelas', [AdminController::class, 'kelas'])->name('kelas');
-    Route::get('/get-kelas', [AdminController::class, 'getKelas'])->name('get-kelas');
-    Route::get('/kelas/{id}', [AdminController::class, 'showKel'])->name('kelas.show');
-    Route::post('/kelas/{id}', [AdminController::class, 'updateKel'])->name('kelas.edit');
-    Route::delete('/kelas/{id}', [AdminController::class, 'destroyKel'])->name('kelas.delete');
-    Route::post('/kelas', [AdminController::class, 'storeKel'])->name('kelas.add');
+    Route::get('/kelas', [C_kelas::class, 'kelas'])->name('kelas');
+    Route::get('/get-kelas', [C_kelas::class, 'getKelas'])->name('get-kelas');
+    Route::get('/kelas/{id}', [C_kelas::class, 'showKel'])->name('kelas.show');
+    Route::post('/kelas/{id}', [C_kelas::class, 'updateKel'])->name('kelas.edit');
+    Route::delete('/kelas/{id}', [C_kelas::class, 'destroyKel'])->name('kelas.delete');
+    Route::post('/kelasadd', [C_kelas::class, 'storeKel'])->name('kelas.add');
 
 
     // JURUSAN
-    Route::get('/jurusan', [AdminController::class, 'jurusan'])->name('jurusan');
-    Route::get('/get-jurusans', [AdminController::class, 'getJurusans'])->name('get-jurusans');
-    Route::get('/jurusans/{id}', [AdminController::class, 'showJur'])->name('jurusans.show');
-    Route::post('/jurusans/{id}', [AdminController::class, 'updateJur'])->name('jurusans.edit');
-    Route::delete('/jurusans/{id}', [AdminController::class, 'destroyJur'])->name('jurusans.delete');
-    Route::post('/jurusans', [AdminController::class, 'storeJur'])->name('jurusans.add');
+    Route::get('/jurusan', [C_jurusan::class, 'jurusan'])->name('jurusan');
+    Route::get('/get-jurusans', [C_jurusan::class, 'getJurusans'])->name('get-jurusans');
+    Route::get('/jurusans/{id}', [C_jurusan::class, 'showJur'])->name('jurusans.show');
+    Route::post('/jurusans/{id}', [C_jurusan::class, 'updateJur'])->name('jurusans.edit');
+    Route::delete('/jurusans/{id}', [C_jurusan::class, 'destroyJur'])->name('jurusans.delete');
+    Route::post('/jurusansadd', [C_jurusan::class, 'storeJur'])->name('jurusans.add');
 
 
     //MATA PELAJARAN
-    Route::get('/mapel', [AdminController::class, 'mapel'])->name('matapelajaran');
-    Route::get('/get-mapel', [AdminController::class, 'getMapel'])->name('get-mapel');
-    Route::get('/mapel/{id}', [AdminController::class, 'showMapel'])->name('mapel.show');
-    Route::post('/mapel/{id}', [AdminController::class, 'updateMapel'])->name('mapel.edit');
-    Route::delete('/mapel/{id}', [AdminController::class, 'destroyMapel'])->name('mapel.delete');
-    Route::post('/mapel', [AdminController::class, 'storeMapel'])->name('mapel.add'); 
+    Route::get('/mapel', [C_mapel::class, 'mapel'])->name('matapelajaran');
+    Route::get('/get-mapel', [C_mapel::class, 'getMapel'])->name('get-mapel');
+    Route::get('/mapel/{id}', [C_mapel::class, 'showMapel'])->name('mapel.show');
+    Route::post('/mapel/{id}', [C_mapel::class, 'updateMapel'])->name('mapel.edit');
+    Route::delete('/mapel/{id}', [C_mapel::class, 'destroyMapel'])->name('mapel.delete');
+    Route::post('/mapeladd', [C_mapel::class, 'storeMapel'])->name('mapel.add'); 
 
     //TAHUN PELAJARAN
-    Route::get('/thnpelajaran', [AdminController::class, 'tahunpelajaran'])->name('tahunpelajaran');
-    Route::get('/get-tahun', [AdminController::class, 'getTP'])->name('get-tahun');
-    Route::get('/tahuns/{id}', [AdminController::class, 'showTP'])->name('tp.show');
-    Route::post('/tahuns/{id}', [AdminController::class, 'updateTP'])->name('tp.edit');
-    Route::delete('/tahuns/{id}', [AdminController::class, 'destroyTP'])->name('tp.delete');
-    Route::post('/tahuns', [AdminController::class, 'storeTP'])->name('tp.add'); 
+    Route::get('/thnpelajaran', [C_tahunpel::class, 'tahunpelajaran'])->name('tahunpelajaran');
+    Route::get('/get-tahun', [C_tahunpel::class, 'getTP'])->name('get-tahun');
+    Route::get('/tahuns/{id}', [C_tahunpel::class, 'showTP'])->name('tp.show');
+    Route::post('/tahuns/{id}', [C_tahunpel::class, 'updateTP'])->name('tp.edit');
+    Route::delete('/tahuns/{id}', [C_tahunpel::class, 'destroyTP'])->name('tp.delete');
+    Route::post('/tahunsadd', [C_tahunpel::class, 'storeTP'])->name('tp.add'); 
     
 
     //PROFIL
@@ -80,28 +88,28 @@ Route::middleware(['checkrole:1'])->group(function (){
     Route::post('/gantiuname', [AdminController::class, 'changeUsername'])->name('gantiuname');
 
     //GURU
-    Route::get('/guru', [AdminController::class, 'guru'])->name('guru');
-    Route::get('/get-guru', [AdminController::class, 'getGuru'])->name('get-guru');
-    Route::get('/guru/{id}', [AdminController::class, 'showGuru'])->name('guru.show');
-    Route::post('/guru/{id}', [AdminController::class, 'updateGuru'])->name('guru.edit');
-    Route::delete('/guru/{id}', [AdminController::class, 'destroyGuru'])->name('guru.delete');
-    Route::post('/guru', [AdminController::class, 'storeGuru'])->name('guru.add'); 
+    Route::get('/guru', [C_guru::class, 'guru'])->name('guru');
+    Route::get('/get-guru', [C_guru::class, 'getGuru'])->name('get-guru');
+    Route::get('/guru/{id}', [C_guru::class, 'showGuru'])->name('guru.show');
+    Route::post('/guru/{id}', [C_guru::class, 'updateGuru'])->name('guru.edit');
+    Route::delete('/guru/{id}', [C_guru::class, 'destroyGuru'])->name('guru.delete');
+    Route::post('/guruadd', [C_guru::class, 'storeGuru'])->name('guru.add'); 
 
     //GURU MAPEL
-    Route::get('/gm', [AdminController::class, 'gm'])->name('gm');
-    Route::get('/get-gm', [AdminController::class, 'getGM'])->name('get-gm');
-    Route::get('/gm/{id}', [AdminController::class, 'showGM'])->name('gm.show');
-    Route::post('/gm/{id}', [AdminController::class, 'updateGM'])->name('gm.edit');
-    Route::delete('/gm/{id}', [AdminController::class, 'destroyGM'])->name('gm.delete');
-    Route::post('/gm', [AdminController::class, 'storeGM'])->name('gm.add'); 
+    Route::get('/gm', [C_gm::class, 'gm'])->name('gm');
+    Route::get('/get-gm', [C_gm::class, 'getGM'])->name('get-gm');
+    Route::get('/gm/{id}', [C_gm::class, 'showGM'])->name('gm.show');
+    Route::post('/gm/{id}', [C_gm::class, 'updateGM'])->name('gm.edit');
+    Route::delete('/gm/{id}', [C_gm::class, 'destroyGM'])->name('gm.delete');
+    Route::post('/gmadd', [C_gm::class, 'storeGM'])->name('gm.add'); 
 
     //SISWA
-    Route::get('/siswa', [AdminController::class, 'siswa'])->name('siswa');
-    Route::get('/get-siswa', [AdminController::class, 'getSiswa'])->name('get-siswa');
-    Route::post('/siswa', [AdminController::class, 'storeSiswa'])->name('siswa.add'); 
-    Route::get('/siswa/{id}', [AdminController::class, 'showSiswa'])->name('siswa.show');
-    Route::post('/siswa/{id}', [AdminController::class, 'updateSiswa'])->name('siswa.edit');
-    Route::delete('/siswa/{id}', [AdminController::class, 'destroySiswa'])->name('siswa.delete');
+    Route::get('/siswa', [C_siswa::class, 'siswa'])->name('siswa');
+    Route::get('/get-siswa', [C_siswa::class, 'getSiswa'])->name('get-siswa');
+    Route::post('/siswaadd', [C_siswa::class, 'storeSiswa'])->name('siswa.add'); 
+    Route::get('/siswa/{id}', [C_siswa::class, 'showSiswa'])->name('siswa.show');
+    Route::post('/siswa/{id}', [C_siswa::class, 'updateSiswa'])->name('siswa.edit');
+    Route::delete('/siswa/{id}', [C_siswa::class, 'destroySiswa'])->name('siswa.delete');
 
     //PRESENSI
     Route::get('/presensi', [AdminController::class, 'presensi'])->name('presensi');
@@ -109,5 +117,7 @@ Route::middleware(['checkrole:1'])->group(function (){
     Route::Post('/presensi/get-kelas', [C_absensi::class, 'index'])->name('get.kelas'); 
     Route::Post('/presensi/get-mapel', [C_absensi::class, 'selectMapel'])->name('get.mapel'); 
     Route::Post('/presensi/simpan-prisensi', [C_absensi::class, 'simpanData'])->name('simpan.prisensi'); 
+
+    Route::get('/adminacc', [C_admin::class, 'admin'])->name('admin');
 
 });
