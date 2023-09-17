@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Presensi;
+use App\Models\Mapel;
 
 class C_absensi extends Controller
 {
     function index(Request  $request)
     {
         $kelas_id  = $request->input('kelas_id');
+
 
         $data = Siswa::where('kelas_id', $kelas_id )->get();
         $html = '';
@@ -55,5 +57,16 @@ class C_absensi extends Controller
         }
         return response()->json(['message' => 'berhasil diedit','data' => 'berhasil update'], 200);
         
+    }
+
+    function selectMapel(Request $request)
+    {
+        $data = Mapel::where('kelas_id', $request->kelas_id)->get();
+        $html = '<option value="">-- Pilih Mapel --</option>';
+        foreach ($data as $key => $value) {
+            $html .= "<option value='{$value->id}'>{$value->mapel}</option>";
+        }
+
+        return response()->json(['message' => 'berhasil ambil data','data' => $html], 200);
     }
 }

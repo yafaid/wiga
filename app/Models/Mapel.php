@@ -12,5 +12,6 @@ class Mapel extends Model
     protected $fillable = [
         'kodemapel',
         'mapel',
+        'kelas_id',
     ];
 }

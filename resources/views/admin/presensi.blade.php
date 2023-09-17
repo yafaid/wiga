@@ -39,13 +39,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="tanggal">Tanggal:</label>
-                        <input type="date" name="tanggal" id="tanggal">
+                        <input type="date" name="tanggal" id="tanggal" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="tanggal">Kelas:</label>
-                        <select class="select22" name="kode_kelas" id="kode_kelas">
+                        <select class="form-control select2" name="kode_kelas" id="kode_kelas" onchange="changeKelas(this.value)">
                             <option value="">-- Pilih Kode Kelas --</option>
                             @foreach ($kelas as $row)
                             <option value="{{$row->id}}">{{$row->kodekelas}} - {{ $row->jurusan->nama }}</option>
@@ -56,11 +56,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="tanggal">Mapel:</label>
-                        <select class="select22" name="kode_mapel" id="kode_mapel">
+                        <select class="form-control select2 " name="kode_mapel" id="kode_mapel" onchange="changeMapel(this.value)">
                             <option value="">-- Pilih Mapel --</option>
-                            @foreach ($mapel as $row)
-                            <option value="{{$row->id}}">{{$row->mapel}}</option>
-                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -85,17 +82,48 @@
     </div>
 
     <script>
-    $('#kode_kelas').on( "change", function() {
-        var val = $( this ).val();
-        var tanggal = $('#tanggal').val();
-        var mapel = $('#kode_mapel').val();
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
 
+    function changeKelas(val){
+        var tanggal = $('#tanggal').val();
         $.ajax({
-                    url: "{{ route('get.kelas') }}",
+                    url: "{{ route('get.mapel') }}",
                     method: 'POST',
                     data: {
                         tanggal: tanggal,
                         kelas_id: val,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+
+                        $('#kode_mapel').html(response.data);
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!!',
+                            text: errorMessage,
+                            icon: 'error',
+                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                            showConfirmButton: false // Menyembunyikan tombol OK
+                        });
+                    }
+                });
+            }
+
+    function changeMapel(val)
+    {
+        var tanggal = $('#tanggal').val();
+        var kode_kelas = $('#kode_kelas').val();
+
+        console.log(kode_kelas);
+          $.ajax({
+                    url: "{{ route('get.kelas') }}",
+                    method: 'POST',
+                    data: {
+                        tanggal: tanggal,
+                        kelas_id: kode_kelas,
                         _token: $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
@@ -112,9 +140,9 @@
                         });
                     }
                 });
-        
+    }
       
-    });
+
     </script>
 
     <script>
