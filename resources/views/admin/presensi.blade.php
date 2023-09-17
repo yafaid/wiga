@@ -39,7 +39,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="tanggal">Tanggal:</label>
-                        <input type="date" name="tanggal" id="tanggal" class="form-control">
+                        <input type="date" name="tanggal" id="tanggal" class="form-control" onchange="tanggalChange()">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -84,6 +84,11 @@
     <script>
     $(document).ready(function() {
         $('.select2').select2();
+    });
+
+    $('#tanggal').on('change', function(){
+        $('#kode_kelas').val('').trigger('change.select2');;
+        $('#kode_mapel').val('').trigger('change.select2');;
     });
 
     function changeKelas(val){
