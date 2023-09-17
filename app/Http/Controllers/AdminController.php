@@ -222,10 +222,12 @@ class AdminController extends Controller
     //MATA PELAJARAN
     public function mapel(){
         $mapel = Mapel::all();
-        return view('admin.mapel',compact('mapel'));
+        $kelas = kelas::all();
+        return view('admin.mapel',compact('mapel','kelas'));
     }
     public function getMapel(){
         $mapel = Mapel::all();
+        $mapel = Mapel::with('kelas')->get();
         return response()->json($mapel);
     }
     public function showMapel($id)
@@ -239,6 +241,7 @@ class AdminController extends Controller
         $mapel = new Mapel;
         $mapel->kodemapel = $request->input('kodemapel');
         $mapel->mapel = $request->input('mapel');
+        $mapel->kelas_id = $request->input('kelas_id');
         $mapel->save();
 
         return response()->json(['message' => 'Mata Pelajaran berhasil ditambahkan']);
@@ -249,6 +252,7 @@ class AdminController extends Controller
         $mapel = Mapel::find($id);
         $mapel->kodemapel = $request->input('kodemapel');
         $mapel->mapel = $request->input('mapel');
+        $mapel->kelas_id = $request->input('kelas_id');
         $mapel->save();  
 
         return response()->json(['message' => 'Mata Pelajaran berhasil diedit']);

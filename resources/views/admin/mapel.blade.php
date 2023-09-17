@@ -31,6 +31,7 @@
                         <tr>
                             <th>Kode Mapel</th>
                             <th>Mapel</th>
+                            <th>Kelas</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -52,11 +53,12 @@
                         },
                         columns: [{
                                 data: 'kodemapel',
-                                name: 'kodemapel'
                             },
                             {
                                 data: 'mapel',
-                                name: 'mapel'
+                            },
+                            {
+                                data: 'kelas.kodekelas',
                             },
                             {
                                 data: null,
@@ -79,6 +81,7 @@
                     $('#simpanTambah').on('click', function() {
                         var kodeMapel = $('#tambahKode').val();
                         var mapel = $('#tambahMatpel').val();
+                        var kelas_id = $('#tambahKelas').val();
 
                         // Mengirim permintaan AJAX untuk menyimpan data Kelas baru
                         $.ajax({
@@ -87,6 +90,7 @@
                             data: {
                                 kodemapel: kodeMapel,
                                 mapel: mapel,
+                                kelas_id: kelas_id,
                                 _token: $('meta[name="csrf-token"]').attr('content')
                             },
                             success: function(response) {
@@ -127,6 +131,7 @@
                                 $('#editId').val(response.id);
                                 $('#editKdMapel').val(response.kodemapel);
                                 $('#editMapel').val(response.mapel);
+                                $('#editKelas').val(response.kelas_id);
 
                                 // Tampilkan modal edit
                                 $('#edit').modal('show');
@@ -138,12 +143,14 @@
                         var id = $('#editId').val();
                         var kdMapel = $('#editKdMapel').val();
                         var mapel = $('#editMapel').val();
+                        var kelas = $('#editKelas').val();
 
 
                         // Prepare the data to be sent
                         var data = {
                             kodemapel: kdMapel,
-                            mapel: mapel
+                            mapel: mapel,
+                            kelas_id: kelas
                         };
                         var csrfToken = $('meta[name="csrf-token"]').attr('content');
                         // Send an AJAX request to update the Kelas
@@ -260,6 +267,15 @@
                         <label for="tambahMatpel">Mata Pelajaran</label>
                         <input type="text" class="form-control" id="tambahMatpel" name="mapel">
                     </div>
+                    <div class="form-group">
+                        <label for="tambahKode">Kelas </label>
+                        <select class="form-control" id="tambahKelas" name="kelas">
+                            <option value="" disabled selected>Pilih Kelas</option>
+                            @foreach ($kelas as $row)
+                                <option value="{{ $row->id }}">{{ $row->kodekelas }}-{{ $row->jurusan->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <button type="button" class="btn btn-primary" id="simpanTambah">Simpan</button>
                 </form>
             </div>
@@ -292,6 +308,15 @@
                     <div class="form-group">
                         <label for="tambahMatpel">Mata Pelajaran</label>
                         <input type="text" class="form-control" id="editMapel" name="mapel">
+                    </div>
+                    <div class="form-group">
+                        <label for="tambahKode">Kelas </label>
+                        <select class="form-control" id="editKelas" name="kelas">
+                            <option value="" disabled selected>Pilih Kelas</option>
+                            @foreach ($kelas as $row)
+                                <option value="{{ $row->id }}">{{ $row->kodekelas }}-{{ $row->jurusan->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <button type="button" class="btn btn-primary" id="saveEdit">Simpan</button>
                 </form>
