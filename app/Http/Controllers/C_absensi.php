@@ -13,31 +13,39 @@ class C_absensi extends Controller
     {
         $kelas_id  = $request->input('kelas_id');
 
-        $data = Siswa::where('kelas_id', $kelas_id )->get();
+        $data = Siswa::where('kelas_id', $kelas_id );
         $html = '';
-        foreach ($data as $key => $value) {
-            $data_user = Presensi::where([ 'siswa_id' => $value->id,'mapel_id' => $request->mapel, 'tanggal' => $request->tanggal]);
-            
-            if(!$data_user->count() == 0){
-                $user_status = $data_user->first();
-                $html .= "<tr>
-                            <td>{$value->nama}</td>
-                            <td><input class='form-check-input' type='radio' " . ($user_status->keterangan == 'hadir' ? 'checked' : '') . " id='{$value->id}_hadir' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_hadir'></td>
-                            <td><input class='form-check-input' type='radio' " . ($user_status->keterangan == 'alpha' ? 'checked' : '') . " id='{$value->id}_alpha' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_alpha'></td>
-                            <td><input class='form-check-input' type='radio' " . ($user_status->keterangan == 'izin' ? 'checked' : '') . " id='{$value->id}_izin' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_izin'></td>
-                            <td><input class='form-check-input' type='radio' " . ($user_status->keterangan == 'sakit' ? 'checked' : '') . " id='{$value->id}_sakit' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_sakit'></td>
-                         </tr>";
+
+        if(!$data->count() == 0){
+            foreach ($data->get() as $key => $value) {
+                $data_user = Presensi::where([ 'siswa_id' => $value->id,'mapel_id' => $request->mapel, 'tanggal' => $request->tanggal]);
                 
-            }else{
-                $html .= "<tr>
-                            <td>{$value->nama}</td>
-                            <td><input class='form-check-input' type='radio'  id='{$value->id}_hadir' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_hadir'></td>
-                            <td><input class='form-check-input' type='radio'  id='{$value->id}_alpha' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_alpha'></td>
-                            <td><input class='form-check-input' type='radio'  id='{$value->id}_izin'  onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_izin'></td>
-                            <td><input class='form-check-input' type='radio'  id='{$value->id}_sakit' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_sakit'></td>
-                        </tr>";
+                if(!$data_user->count() == 0){
+                    $user_status = $data_user->first();
+                    $html .= "<tr>
+                                <td>{$value->nama}</td>
+                                <td><input class='form-check-input' type='radio' " . ($user_status->keterangan == 'hadir' ? 'checked' : '') . " id='{$value->id}_hadir' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_hadir'></td>
+                                <td><input class='form-check-input' type='radio' " . ($user_status->keterangan == 'alpha' ? 'checked' : '') . " id='{$value->id}_alpha' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_alpha'></td>
+                                <td><input class='form-check-input' type='radio' " . ($user_status->keterangan == 'izin' ? 'checked' : '') . " id='{$value->id}_izin' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_izin'></td>
+                                <td><input class='form-check-input' type='radio' " . ($user_status->keterangan == 'sakit' ? 'checked' : '') . " id='{$value->id}_sakit' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_sakit'></td>
+                            </tr>";
+                    
+                }else{
+                    $html .= "<tr>
+                                <td>{$value->nama}</td>
+                                <td><input class='form-check-input' type='radio'  id='{$value->id}_hadir' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_hadir'></td>
+                                <td><input class='form-check-input' type='radio'  id='{$value->id}_alpha' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_alpha'></td>
+                                <td><input class='form-check-input' type='radio'  id='{$value->id}_izin'  onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_izin'></td>
+                                <td><input class='form-check-input' type='radio'  id='{$value->id}_sakit' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_sakit'></td>
+                            </tr>";
+                }
+    
             }
-  
+
+        }else{
+            $html .= "<tr>
+                        <td colspan='5' class='text-center'>Tidak ada data</td>
+                    </tr>";
         }
 
         return response()->json(['message' => 'berhasil ambil data','data' => $html], 200);

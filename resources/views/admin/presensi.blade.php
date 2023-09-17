@@ -75,7 +75,9 @@
                     </tr>
                 </thead>
                 <tbody id="tbody">
-                    
+                    <tr>
+                        <td colspan="5" class="text-center">Tidak ada data</td>
+                    </tr>
                 </tbody>
             </table>
         </form>
@@ -118,7 +120,9 @@
                     },
                     success: function(response) {
 
-                        $('#tbody').html('');
+                        $('#tbody').html(` <tr>
+                        <td colspan="5" class="text-center">Tidak ada data</td>
+                    </tr>`);
                         $('#kode_mapel').html(response.data);
                         $('#loading').hide();
                     },
