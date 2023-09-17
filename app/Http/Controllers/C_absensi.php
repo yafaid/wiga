@@ -35,7 +35,7 @@ class C_absensi extends Controller
         $id = $parts[0];  // id ("1")
         $status = $parts[1];  // status ("_")
 
-        $count_siswa = Presensi::where(['siswa_id' => $id ,'tanggal' => $request->tanggal])->count();
+        $count_siswa = Presensi::where(['siswa_id' => $id ,'tanggal' => $request->tanggal, 'mapel_id' => $request->mapel ])->count();
         
         if($count_siswa == 0){
                 Presensi::create([
@@ -46,7 +46,7 @@ class C_absensi extends Controller
                     'keterangan' => $status,
                 ]);
         }else{
-            Presensi::where(['siswa_id' => $id ,'tanggal' => $request->tanggal])->update([
+            Presensi::where(['siswa_id' => $id ,'tanggal' => $request->tanggal, 'mapel_id' => $request->mapel])->update([
                 'mapel_id' => $request->mapel,
                 'kelas_id' => $request->kode_kelas,
                 'tanggal' => $request->tanggal,
