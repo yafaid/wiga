@@ -115,6 +115,7 @@
                     },
                     success: function(response) {
 
+                        $('#tbody').html('');
                         $('#kode_mapel').html(response.data);
                     },
                     error: function(xhr, status, error) {
