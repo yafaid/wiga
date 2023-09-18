@@ -125,5 +125,5 @@ Route::middleware(['checkrole:1'])->group(function (){
     
     Route::get('/adminacc', [C_admin::class, 'admin'])->name('admin');
     
-    Route::get('/presensi/export', [C_absensi::class, 'exportToExcel'])->name('test.export');
+    Route::get('/presensi/harian/export', [C_Prisensi_harian::class, 'exportPrisensiHarian'])->name('export.prisensi.harian');
 });

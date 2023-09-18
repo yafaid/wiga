@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Excel;
+use App\Exports\E_Prisensi_harian;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Presensi_harian;
-use Excel;
 
 class C_Prisensi_harian extends Controller
 {
@@ -78,5 +79,11 @@ class C_Prisensi_harian extends Controller
             ]);
         }
         return response()->json(['message' => 'berhasil diedit','data' => 'berhasil update'], 200);
+    }
+    public function exportPrisensiHarian(Request $request)
+    {
+        $data = Presensi_harian::all(); // Gantilah YourModel dengan model yang sesuai
+
+        return Excel::download(new E_Prisensi_harian($data), 'data.xlsx');
     }
 }

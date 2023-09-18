@@ -32,7 +32,11 @@
                 </div>
             </div>
         </div>
-
+        <div class="row">
+        <div class="col-md-12 mt-2 mb-2 d-flex flex-row-reverse">
+            <button class="btn btn-primary" id="exportButton">Export Prisensi Harian</button>
+        </div>
+    </div>
         <form method="POST" action="{{ route('presensi.add') }}" id="form_prisensi">
             @csrf
             <div class="row">
@@ -222,3 +226,5 @@
 
 
 @endsection
+
+

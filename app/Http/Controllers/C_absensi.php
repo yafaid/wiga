@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Excel;
+use App\Exports\E_Prisensi_harian;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Presensi;
 use App\Models\Mapel;
-use Excel;
-use App\Exports\E_Prisensi_harian;
 
 class C_absensi extends Controller
 {
@@ -93,10 +93,5 @@ class C_absensi extends Controller
 
         return response()->json(['message' => 'berhasil ambil data','data' => $html], 200);
     }
-    public function exportToExcel()
-    {
-        $data = Presensi::all(); // Gantilah YourModel dengan model yang sesuai
-
-        return Excel::download(new E_Prisensi_harian($data), 'data.xlsx');
-    }
+ 
 }
