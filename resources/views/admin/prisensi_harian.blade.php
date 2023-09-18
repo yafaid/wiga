@@ -83,7 +83,7 @@
 <script>
     $(document).ready(function() {
         $('.select2').select2();
-        $('input[name="tanggal_mulai"]').daterangepicker();
+        $('input[name="tanggal_export"]').daterangepicker();
     });
 
     $('#tanggal').on('change', function() {
@@ -194,13 +194,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="{{ route('export.prisensi.harian') }}" method="get">
                     @csrf
                     <div class="form-group">
-                        <label for="tanggal_mulai">Tanggal Mulai</label>
-                        <input type="text" class="form-control" id="tanggal_mulai" name="tanggal_mulai">
+                        <label for="tanggal_export">Tanggal Range</label>
+                        <input type="text" class="form-control" id="tanggal_export" name="tanggal_export">
                     </div>
-                    <button type="button" class="btn btn-primary" id="saveEdit">Export Excel</button>
+                    <button type="submit" class="btn btn-primary" id="saveEdit">Export Excel</button>
                 </form>
             </div>
             <div class="modal-footer">

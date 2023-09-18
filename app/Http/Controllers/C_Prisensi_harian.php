@@ -82,7 +82,19 @@ class C_Prisensi_harian extends Controller
     }
     public function exportPrisensiHarian(Request $request)
     {
-        $data = Presensi_harian::all(); // Gantilah YourModel dengan model yang sesuai
+
+      
+        $dateRange = $request->tanggal_export;
+        $dateParts = explode(" - ", $dateRange);
+        $startDate = date('Y-m-d', strtotime($dateParts[0]));
+        $endDate = date('Y-m-d', strtotime($dateParts[1]));
+
+        
+        $data = Presensi_harian::join('siswa', 'presensi_harian.siswa_id', '=', 'siswa.id')
+        ->join('kelas','presensi_harian.kelas_id','=','kelas.id')
+        ->whereBetween('tanggal', [$startDate, $endDate])
+        ->select('presensi_harian.*','siswa.nama', 'kelas.kodekelas')
+        ->get(); // Gantilah YourModel dengan model yang sesuai
 
         return Excel::download(new E_Prisensi_harian($data), 'data.xlsx');
     }
