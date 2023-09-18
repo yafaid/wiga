@@ -46,8 +46,7 @@ class E_Prisensi_harian implements FromCollection, WithHeadings, WithCustomStart
 
     public function styles(Worksheet $sheet)
     {
-            // Mengatur garis batas untuk seluruh sel dengan gaya border solid
-              // Mengatur garis batas untuk seluruh sel kecuali kolom A
+        // Mengatur garis batas untuk seluruh sel dengan gaya border solid
         foreach ($sheet->getRowIterator() as $row) {
             foreach ($row->getCellIterator() as $cell) {
                 if ($cell->getColumn() !== 'A') { // Selain kolom A
