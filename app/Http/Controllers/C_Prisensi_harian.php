@@ -93,6 +93,7 @@ class C_Prisensi_harian extends Controller
         $data = Presensi_harian::join('siswa', 'presensi_harian.siswa_id', '=', 'siswa.id')
         ->join('kelas','presensi_harian.kelas_id','=','kelas.id')
         ->whereBetween('tanggal', [$startDate, $endDate])
+        ->where('presensi_harian.kelas_id', $request->kode_kelas)
         ->select('presensi_harian.*','siswa.nama', 'kelas.kodekelas')
         ->get(); // Gantilah YourModel dengan model yang sesuai
 

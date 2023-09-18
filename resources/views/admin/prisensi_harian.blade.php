@@ -200,6 +200,15 @@
                         <label for="tanggal_export">Tanggal Range</label>
                         <input type="text" class="form-control" id="tanggal_export" name="tanggal_export">
                     </div>
+                    <div class="form-group">
+                        <label for="tanggal">Kelas:</label>
+                        <select class="form-control select2" name="kode_kelas" id="kode_kelas">
+                            <option value="">-- Pilih Kode Kelas --</option>
+                            @foreach ($kelas as $row)
+                            <option value="{{$row->id}}">{{$row->kodekelas}} - {{ $row->jurusan->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary" id="saveEdit">Export Excel</button>
                 </form>
             </div>
