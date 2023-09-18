@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Presensi_harian;
+use Excel;
 
 class C_Prisensi_harian extends Controller
 {

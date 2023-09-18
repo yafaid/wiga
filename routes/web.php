@@ -122,7 +122,8 @@ Route::middleware(['checkrole:1'])->group(function (){
     Route::get('/presensi/harian', [C_Prisensi_harian::class, 'index'])->name('presensi.harian');
     Route::Post('/presensi/get-siswa', [C_Prisensi_harian::class, 'getSiswa'])->name('get.siswa'); 
     Route::Post('/presensi/simpan-prisensi-siswa', [C_Prisensi_harian::class, 'storeData'])->name('simpan.prisensi.siswa'); 
-
+    
     Route::get('/adminacc', [C_admin::class, 'admin'])->name('admin');
-
+    
+    Route::get('/presensi/export', [C_absensi::class, 'exportToExcel'])->name('test.export');
 });
