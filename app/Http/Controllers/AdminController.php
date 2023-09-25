@@ -11,20 +11,33 @@ use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\ThnPel;
 use App\Models\Mapel;
-use App\Models\Guru;    
+use App\Models\Guru;
 use App\Models\GuruMapel;
 use App\Models\Siswa;
 use App\Models\Presensi;
+use App\Models\User;
 
 class AdminController extends Controller
 {
     // Menampilkan halaman admin
     public function index()
     {
-        return view('admin.dashboard');
+        $totalsiswa = Siswa::where('is_active', 1)->count();
+        $totalsiswal = Siswa::where('jeniskelamin', 'L')
+            ->where('is_active', 1)
+            ->count();
+
+        $totalsiswap = Siswa::where('jeniskelamin', 'P')
+            ->where('is_active', 1)
+            ->count();
+        $totalguru = Guru::count();
+        $totalmapel = Mapel::count();
+        $totalkelas = Kelas::count();
+        $totaladmin = User::where('role_id', 1)->count();
+        return view('admin.dashboard', compact('totalsiswa', 'totalguru', 'totaladmin', 'totalsiswal', 'totalsiswap'));
     }
 
-    
+
 
 
 
@@ -35,17 +48,17 @@ class AdminController extends Controller
     }
     public function changePassword(Request $request)
     {
-    $user = auth()->user();
-    $currentPassword = $request->input('currentPassword');
-    $newPassword = $request->input('newPassword');
-    if (!Hash::check($currentPassword, $user->password)) {
-        throw ValidationException::withMessages([
-            'currentPassword' => 'Password saat ini salah.'
-        ]);
-    }
-    $user->password = Hash::make($newPassword);
-    $user->save();
-    return response()->json(['message' => 'Password berhasil diubah.']);
+        $user = auth()->user();
+        $currentPassword = $request->input('currentPassword');
+        $newPassword = $request->input('newPassword');
+        if (!Hash::check($currentPassword, $user->password)) {
+            throw ValidationException::withMessages([
+                'currentPassword' => 'Password saat ini salah.'
+            ]);
+        }
+        $user->password = Hash::make($newPassword);
+        $user->save();
+        return response()->json(['message' => 'Password berhasil diubah.']);
     }
     public function changeUsername(Request $request)
     {
@@ -68,15 +81,15 @@ class AdminController extends Controller
 
     //PRESENSI
     public function presensi()
-    {     
+    {
         $siswa = Siswa::all();
         $kelas = kelas::all();
         $mapel = Mapel::all();
-        
-        return view('admin.presensi',compact('siswa','kelas','mapel'));
+
+        return view('admin.presensi', compact('siswa', 'kelas', 'mapel'));
     }
     public function storePresensi(Request $request)
-    {        
+    {
         // Validasi data yang dikirimkan melalui formulir
         $validator = Validator::make($request->all(), [
             'siswa_id.*' => 'required|numeric',

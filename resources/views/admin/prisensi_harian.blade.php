@@ -133,14 +133,13 @@
     }
 
     function buttonPrisensi(id) {
-        var mapel = $('#kode_mapel').val();
         var kode_kelas = $('#kode_kelas').val();
         var tanggal = $('#tanggal').val();
 
-        if (mapel == '' || kode_kelas == '' || tanggal == '') {
+        if (kode_kelas == '' || tanggal == '') {
             Swal.fire({
                 title: 'Error!!',
-                text: 'pastikan form sudah terisi semua',
+                text: 'Pastikan form sudah terisi semua',
                 icon: 'error',
                 timer: 2000, // Menutup setelah 2 detik (2000 ms)
                 showConfirmButton: false // Menyembunyikan tombol OK
@@ -152,7 +151,6 @@
             method: "POST",
             data: {
                 status: id,
-                mapel: mapel,
                 kode_kelas: kode_kelas,
                 tanggal: tanggal,
                 _token: $('meta[name="csrf-token"]').attr('content')

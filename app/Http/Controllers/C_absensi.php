@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Excel;
-use App\Exports\E_Prisensi_harian;
+use App\Exports\E_Prisens_mapel;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Presensi;
@@ -93,5 +93,23 @@ class C_absensi extends Controller
 
         return response()->json(['message' => 'berhasil ambil data','data' => $html], 200);
     }
+
+    public function exportPrisensiMapel(Request $request)
+{
+    $dateRange = $request->tanggal_export;
+    $dateParts = explode(" - ", $dateRange);
+    $startDate = date('Y-m-d', strtotime($dateParts[0]));
+    $endDate = date('Y-m-d', strtotime($dateParts[1]));
+
+    $data = Presensi::join('siswa', 'absensi.siswa_id', '=', 'siswa.id')
+        ->join('kelas', 'absensi.kelas_id', '=', 'kelas.id')
+        ->join('mapels', 'absensi.mapel_id', '=', 'mapels.id')
+        ->whereBetween('tanggal', [$startDate, $endDate])
+        ->where('absensi.kelas_id', $request->kode_kelas)
+        ->select('absensi.*', 'siswa.nama', 'kelas.kodekelas', 'mapels.mapel')
+        ->get();
+
+    return Excel::download(new E_Prisens_mapel($data), 'dataabsensimapel.xlsx');
+}
  
 }

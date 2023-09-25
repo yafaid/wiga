@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Guru;    
+use App\Models\User; 
 
 class C_guru extends Controller
 {
@@ -52,5 +53,17 @@ class C_guru extends Controller
         $tahun->delete();
 
         return response()->json(['message' => 'Guru berhasil dihapus']);
+    }
+
+    public function guruacc()
+    {        
+        $guru = Guru::all();
+        return view('admin.guruacc',compact('guru'));
+    }
+    public function getUser()
+    {
+        $users = User::all();
+        $users = User::where('role_id', 2)->get();
+        return response()->json($users);
     }
 }

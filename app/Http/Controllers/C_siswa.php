@@ -10,6 +10,7 @@ use App\Models\Mapel;
 use App\Models\Guru;    
 use App\Models\GuruMapel;
 use App\Models\Siswa;
+use App\Models\User;
 use App\Models\Presensi;
 
 class C_siswa extends Controller
@@ -65,5 +66,19 @@ class C_siswa extends Controller
         $siswa->delete();
 
         return response()->json(['message' => 'Siswa berhasil dihapus']);
+    }
+
+    public function siswaacc()
+    {
+        $siswa = Siswa::all();
+        $jurusans = Jurusan::all();
+        $kelas = Kelas::all();
+        return view('admin.siswaacc',compact('jurusans','kelas','siswa'));
+    }
+    public function getUser()
+    {
+        $users = User::all();
+        $users = User::where('role_id', 3)->get();
+        return response()->json($users);
     }
 }

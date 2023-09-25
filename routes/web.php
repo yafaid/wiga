@@ -46,6 +46,10 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['checkrole:1'])->group(function (){
     Route::get('/admin', [AdminController::class, 'index'])->name('dbadmin');
+    Route::get('/adminacc', [C_admin::class, 'admin'])->name('admin');
+    Route::get('/get-admin', [C_admin::class, 'getUser'])->name('get-admin');
+    Route::post('/adminadd', [C_admin::class, 'addUser'])->name('admin.add');
+    Route::delete('/admin/{id}', [C_admin::class, 'destroyUser'])->name('admin.delete');
     
     
     //KELAS
@@ -95,6 +99,8 @@ Route::middleware(['checkrole:1'])->group(function (){
     Route::post('/guru/{id}', [C_guru::class, 'updateGuru'])->name('guru.edit');
     Route::delete('/guru/{id}', [C_guru::class, 'destroyGuru'])->name('guru.delete');
     Route::post('/guruadd', [C_guru::class, 'storeGuru'])->name('guru.add'); 
+    Route::get('/guruacc', [C_guru::class, 'guruacc'])->name('guruacc');
+    Route::get('/get-guruacc', [C_guru::class, 'getUser'])->name('get-guruacc');
 
     //GURU MAPEL
     Route::get('/gm', [C_gm::class, 'gm'])->name('gm');
@@ -111,6 +117,8 @@ Route::middleware(['checkrole:1'])->group(function (){
     Route::get('/siswa/{id}', [C_siswa::class, 'showSiswa'])->name('siswa.show');
     Route::post('/siswa/{id}', [C_siswa::class, 'updateSiswa'])->name('siswa.edit');
     Route::delete('/siswa/{id}', [C_siswa::class, 'destroySiswa'])->name('siswa.delete');
+    Route::get('/siswaacc', [C_siswa::class, 'siswaacc'])->name('siswaacc');
+    Route::get('/get-siswaacc', [C_siswa::class, 'getUser'])->name('get-siswaacc');
 
     //PRESENSI
     Route::get('/presensi', [AdminController::class, 'presensi'])->name('presensi');
@@ -123,7 +131,8 @@ Route::middleware(['checkrole:1'])->group(function (){
     Route::Post('/presensi/get-siswa', [C_Prisensi_harian::class, 'getSiswa'])->name('get.siswa'); 
     Route::Post('/presensi/simpan-prisensi-siswa', [C_Prisensi_harian::class, 'storeData'])->name('simpan.prisensi.siswa'); 
     
-    Route::get('/adminacc', [C_admin::class, 'admin'])->name('admin');
+    
     
     Route::get('/presensi/harian/export', [C_Prisensi_harian::class, 'exportPrisensiHarian'])->name('export.prisensi.harian');
+    Route::get('/presensi/mapel/export', [C_absensi::class, 'exportPrisensiMapel'])->name('export.prisensi.mapel');
 });

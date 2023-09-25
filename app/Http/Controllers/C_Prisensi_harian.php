@@ -97,6 +97,6 @@ class C_Prisensi_harian extends Controller
         ->select('presensi_harian.*','siswa.nama', 'kelas.kodekelas')
         ->get(); // Gantilah YourModel dengan model yang sesuai
 
-        return Excel::download(new E_Prisensi_harian($data), 'data.xlsx');
+        return Excel::download(new E_Prisensi_harian($data), 'dataharian.xlsx');
     }
 }

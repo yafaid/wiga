@@ -95,7 +95,7 @@
                                     class="fas fa-graduation-cap"></i><span>Data Siswa</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="{{ route('siswa') }}">Data Siswa</a></li>
-                                <li><a class="nav-link" href="layout-default.html">Akun Siswa</a></li>
+                                <li><a class="nav-link" href="{{ route('siswaacc') }}">Akun Siswa</a></li>
                             </ul>
                         </li>
                         <li class="menu-header">Data Absensi</li>
@@ -103,8 +103,8 @@
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fas fa-book-open"></i><span>Absen</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="{{ route('presensi.harian') }}">Data Kehadiran</a></li>                                
-                                <li><a class="nav-link" href="{{ route('presensi') }}">Presensi</a></li>
+                                <li><a class="nav-link" href="{{ route('presensi.harian') }}">Presensi Harian</a></li>                                
+                                <li><a class="nav-link" href="{{ route('presensi') }}">Presensi Mapel</a></li>
                             </ul>
                         </li>
                         <li class="menu-header">Data Guru</li>
@@ -114,7 +114,7 @@
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="{{ route('guru') }}">Data Guru</a></li>
                                 <li><a class="nav-link" href="{{ route('gm') }}">Data Guru dan Mapelnya</a></li>
-                                <li><a class="nav-link" href="">Akun Guru</a></li>
+                                <li><a class="nav-link" href="{{ route('guruacc') }}">Akun Guru</a></li>
                             </ul>
                         </li>
                         <li class="menu-header">Data Kelas</li>
@@ -134,15 +134,11 @@
                                 <li><a class="nav-link" href="{{ route('matapelajaran') }}">Data Mata Pelajaran</a></li>
                             </ul>
                         </li>
-                        <li class="menu-header">Data Pembelajaran</li>
+                        {{-- <li class="menu-header">Data Pembelajaran</li>
                         <li class="dropdown">
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fas fa-atom"></i><span>Data Pembelajaran</span></a>
-                            <ul class="dropdown-menu">
-                                {{-- <li><a class="nav-link" href="layout-default.html">Data Guru</a></li>
-                                <li><a class="nav-link" href="layout-default.html">Akun Guru</a></li> --}}
-                            </ul>
-                        </li>
+                        </li> --}}
                         <li class="menu-header">Data Tahun Pembelajaran</li>
                         <li class="dropdown">
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i

@@ -8,9 +8,9 @@
 @section('konten')
 
     <div class="section-header">
-        <h1>Akun Admin</h1>
+        <h1>Akun Siswa</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active">Akun Admin</div>
+            <div class="breadcrumb-item active">Akun Siswa</div>
 
         </div>
     </div>
@@ -18,13 +18,12 @@
     <div class="section-body">
         <div class="card">
             <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                <h4>Data Admin</h4>
+                <h4>Data Siswa</h4>
                 <div>
                     <a href="#" id="tambahButton" class="btn btn-icon icon-left btn-primary"><i
                             class="fas fa-plus"></i>
                         Tambah Data
-                    </a>
-                    <a href="#" class="btn btn-icon icon-left btn-dark"><i class="far fa-file"></i> Print</a>
+                    </a>                    
                 </div>
             </div>
             <div class="card-body">
@@ -46,7 +45,7 @@
         $(document).ready(function() {
             var table = $('#table').DataTable({
                 ajax: {
-                    url: "{{ route('get-admin') }}",
+                    url: "{{ route('get-siswaacc') }}",
                     method: "GET",
                     responsive: true,
                     theme: "santafe",
@@ -71,7 +70,7 @@
             $('#tambahButton').on('click', function() {
                 // Menampilkan modal tambah
                 $('#add').modal('show');
-                $('#addForm')[0].reset();
+                $('#userForm')[0].reset();
             });
 
             $('#simpanTambah').on('click', function() {
@@ -196,9 +195,14 @@
             <form id="userForm">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name"
-                            placeholder="Nama Pengguna">
+                        <label for="name">Pilih Siswa</label>
+                        <select class="form-control" id="name" name="name">
+                            <option value="">-- Pilih Siswa --</option>
+                            @foreach ($siswa as $row)
+                                <option value="{{ $row->nama }}">{{ $row->nama }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -212,7 +216,7 @@
                     </div>
                     <div class="form-group">
                         <select class="form-control" id="role_id" name="role_id" style="display: none;">
-                            <option value="1" selected>1</option>
+                            <option value="3" selected>3</option>
                         </select>
                     </div>
                 </div>

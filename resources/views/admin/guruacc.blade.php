@@ -46,7 +46,7 @@
         $(document).ready(function() {
             var table = $('#table').DataTable({
                 ajax: {
-                    url: "{{ route('get-admin') }}",
+                    url: "{{ route('get-guruacc') }}",
                     method: "GET",
                     responsive: true,
                     theme: "santafe",
@@ -196,9 +196,14 @@
             <form id="userForm">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name"
-                            placeholder="Nama Pengguna">
+                        <label for="name">Pilih Guru</label>
+                        <select class="form-control" id="name" name="name">
+                            <option value="">-- Pilih Guru --</option>
+                            @foreach ($guru as $guru)
+                                <option value="{{ $guru->nama }}">{{ $guru->noinduk }} - {{ $guru->nama }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -212,7 +217,7 @@
                     </div>
                     <div class="form-group">
                         <select class="form-control" id="role_id" name="role_id" style="display: none;">
-                            <option value="1" selected>1</option>
+                            <option value="2" selected>2</option>
                         </select>
                     </div>
                 </div>

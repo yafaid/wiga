@@ -33,10 +33,10 @@
             </div>
         </div>
         <div class="row">
-        <div class="col-md-12 mt-2 mb-2 d-flex flex-row-reverse">
-            <button class="btn btn-primary" id="exportButton">Export Prisensi Harian</button>
+            <div class="col-md-12 mt-2 mb-2 d-flex flex-row-reverse">
+                <button class="btn btn-primary" id="exportButton">Export Prisensi Harian</button>
+            </div>
         </div>
-    </div>
         <form method="POST" action="{{ route('presensi.add') }}" id="form_prisensi">
             @csrf
             <div class="row">
@@ -49,10 +49,12 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="tanggal">Kelas:</label>
-                        <select class="form-control select2" name="kode_kelas" id="kode_kelas" onchange="changeKelas(this.value)">
+                        <select class="form-control select2" name="kode_kelas" id="kode_kelas"
+                            onchange="changeKelas(this.value)">
                             <option value="">-- Pilih Kode Kelas --</option>
                             @foreach ($kelas as $row)
-                            <option value="{{$row->id}}">{{$row->kodekelas}} - {{ $row->jurusan->nama }}</option>
+                                <option value="{{ $row->id }}">{{ $row->kodekelas }} - {{ $row->jurusan->nama }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -60,7 +62,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="tanggal">Mapel:</label>
-                        <select class="form-control select2 " name="kode_mapel" id="kode_mapel" onchange="changeMapel(this.value)">
+                        <select class="form-control select2 " name="kode_mapel" id="kode_mapel"
+                            onchange="changeMapel(this.value)">
                             <option value="">-- Pilih Mapel --</option>
                         </select>
                     </div>
@@ -88,143 +91,187 @@
     </div>
 
     <script>
-    $(document).ready(function() {
-        $('.select2').select2();
-    });
+        $(document).ready(function() {
+            $('.select2').select2();
+            $('input[name="tanggal_export"]').daterangepicker();
+        });
 
-    $('#tanggal').on('change', function(){
-        $('#kode_kelas').val('').trigger('change.select2');;
-        $('#kode_mapel').val('').trigger('change.select2');;
-    });
+        $('#tanggal').on('change', function() {
+            $('#kode_kelas').val('').trigger('change.select2');;
+            $('#kode_mapel').val('').trigger('change.select2');;
+        });
 
-    function changeKelas(val){
-        var tanggal = $('#tanggal').val();
-                
-        if(tanggal == ''){
+        function changeKelas(val) {
+            var tanggal = $('#tanggal').val();
+
+            if (tanggal == '') {
                 Swal.fire({
-                            title: 'Error!!',
-                            text: 'Tanggal tidak boleh kosong',
-                            icon: 'error',
-                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                            showConfirmButton: false // Menyembunyikan tombol OK
-                        });
-                        $('#kode_kelas').val(''); // Change the value or make some change to the internal state
+                    title: 'Error!!',
+                    text: 'Tanggal tidak boleh kosong',
+                    icon: 'error',
+                    timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                    showConfirmButton: false // Menyembunyikan tombol OK
+                });
+                $('#kode_kelas').val(''); // Change the value or make some change to the internal state
                 return;
             }
-        $.ajax({
-                    url: "{{ route('get.mapel') }}",
-                    method: 'POST',
-                    beforeSend: function() {
-                            $('#loading').show();
-                        },
-                    data: {
-                        tanggal: tanggal,
-                        kelas_id: val,
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
+            $.ajax({
+                url: "{{ route('get.mapel') }}",
+                method: 'POST',
+                beforeSend: function() {
+                    $('#loading').show();
+                },
+                data: {
+                    tanggal: tanggal,
+                    kelas_id: val,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
 
-                        $('#tbody').html(` <tr>
+                    $('#tbody').html(` <tr>
                         <td colspan="5" class="text-center">Tidak ada data</td>
                     </tr>`);
-                        $('#kode_mapel').html(response.data);
-                        $('#loading').hide();
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            title: 'Error!!',
-                            text: errorMessage,
-                            icon: 'error',
-                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                            showConfirmButton: false // Menyembunyikan tombol OK
-                        });
-                    }
-                });
-            }
+                    $('#kode_mapel').html(response.data);
+                    $('#loading').hide();
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error!!',
+                        text: errorMessage,
+                        icon: 'error',
+                        timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                        showConfirmButton: false // Menyembunyikan tombol OK
+                    });
+                }
+            });
+        }
 
-    function changeMapel(val)
-    {
-        var tanggal = $('#tanggal').val();
-        var kode_kelas = $('#kode_kelas').val();
+        function changeMapel(val) {
+            var tanggal = $('#tanggal').val();
+            var kode_kelas = $('#kode_kelas').val();
 
 
-          $.ajax({
-                    url: "{{ route('get.kelas') }}",
-                    method: 'POST',
-                    beforeSend: function() {
-                            $('#loading').show();
-                        },
-                    data: {
-                        tanggal: tanggal,
-                        kelas_id: kode_kelas,
-                        mapel: val,
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
+            $.ajax({
+                url: "{{ route('get.kelas') }}",
+                method: 'POST',
+                beforeSend: function() {
+                    $('#loading').show();
+                },
+                data: {
+                    tanggal: tanggal,
+                    kelas_id: kode_kelas,
+                    mapel: val,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
 
-                        $('#tbody').html(response.data);
-                        $('#loading').hide();
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            title: 'Error!!',
-                            text: errorMessage,
-                            icon: 'error',
-                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                            showConfirmButton: false // Menyembunyikan tombol OK
-                        });
-                    }
-                });
-    }
-      
-
+                    $('#tbody').html(response.data);
+                    $('#loading').hide();
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error!!',
+                        text: errorMessage,
+                        icon: 'error',
+                        timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                        showConfirmButton: false // Menyembunyikan tombol OK
+                    });
+                }
+            });
+        }
     </script>
 
     <script>
-        function buttonPrisensi(id)
-        {
+        function buttonPrisensi(id) {
             var mapel = $('#kode_mapel').val();
             var kode_kelas = $('#kode_kelas').val();
             var tanggal = $('#tanggal').val();
 
-            if(mapel == '' || kode_kelas == '' || tanggal == ''){
+            if (mapel == '' || kode_kelas == '' || tanggal == '') {
                 Swal.fire({
-                            title: 'Error!!',
-                            text: 'pastikan form sudah terisi semua',
-                            icon: 'error',
-                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                            showConfirmButton: false // Menyembunyikan tombol OK
-                        });
+                    title: 'Error!!',
+                    text: 'pastikan form sudah terisi semua',
+                    icon: 'error',
+                    timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                    showConfirmButton: false // Menyembunyikan tombol OK
+                });
                 return;
             }
-                    $.ajax({
-                            url: "{{ route('simpan.prisensi') }}",
-                            method: "POST",
-                            data:  {
-                                status: id,
-                                mapel: mapel,
-                                kode_kelas: kode_kelas,
-                                tanggal: tanggal,
-                                 _token: $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function(data) {
-                                
-                            },
-                            error: function(data){
-                                Swal.fire({
-                                    title: 'Error!!',
-                                    text: errorMessage,
-                                    icon: 'error',
-                                    timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                                    showConfirmButton: false // Menyembunyikan tombol OK
-                                });
-                            }
-                        });
+            $.ajax({
+                url: "{{ route('simpan.prisensi') }}",
+                method: "POST",
+                data: {
+                    status: id,
+                    mapel: mapel,
+                    kode_kelas: kode_kelas,
+                    tanggal: tanggal,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+
+                },
+                error: function(data) {
+                    Swal.fire({
+                        title: 'Error!!',
+                        text: errorMessage,
+                        icon: 'error',
+                        timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                        showConfirmButton: false // Menyembunyikan tombol OK
+                    });
+                }
+            });
 
         }
+        $('#exportButton').on('click', function(e) {
+            e.preventDefault();
+            $('#modalExport').modal('show');
+        });
     </script>
 
 
 @endsection
-
-
+<div class="modal fade" id="modalExport" tabindex="-1" role="dialog" aria-labelledby="modalExportLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalExportLabel">Export Prisensi Harian</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('export.prisensi.mapel') }}" method="get">
+                    @csrf
+                    <div class="form-group">
+                        <label for="tanggal_export">Tanggal Range</label>
+                        <input type="text" class="form-control" id="tanggal_export" name="tanggal_export">
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal">Kelas:</label>
+                        <select class="form-control select2" name="kode_kelas" id="kode_kelas">
+                            <option value="">-- Pilih Kode Kelas --</option>
+                            @foreach ($kelas as $row)
+                                <option value="{{ $row->id }}">{{ $row->kodekelas }} - {{ $row->jurusan->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal">Mapel:</label>
+                        <select class="form-control select2 " name="kode_mapel" id="kode_mapel">
+                            <option value="">-- Pilih Mapel --</option>
+                            @foreach ($mapel as $row)
+                                <option value="{{ $row->id }}">{{ $row->kodemapel }} - {{ $row->mapel }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="saveEdit">Export Excel</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
