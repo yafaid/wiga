@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CekRolesMiddleware
@@ -14,16 +14,25 @@ class CekRolesMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $role): Response
     {
-        $user = Auth::user();
+        // Periksa apakah pengguna telah login
+        if (!auth()->check()) {
+            return redirect('/login');
+        }
 
-        $roles = [1, 2, 3];
+        $user = auth()->user();
 
-        if ($user && in_array($user->role_id, $roles)) {
+        // Periksa peran pengguna
+        if ($user->role_id == $role) {
             return $next($request);
         }
 
-        return redirect('/');
+        // Redirect sesuai dengan peran pengguna
+        if ($user->role_id == 1) {
+            return redirect('/admin');
+        } elseif ($user->role_id == 2) {
+            return redirect('/gurudb');
+        }
     }
 }

@@ -44,7 +44,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-Route::middleware(['checkrole:1'])->group(function (){
+Route::middleware(['checkroles:1'])->group(function (){
     Route::get('/admin', [AdminController::class, 'index'])->name('dbadmin');
     Route::get('/adminacc', [C_admin::class, 'admin'])->name('admin');
     Route::get('/get-admin', [C_admin::class, 'getUser'])->name('get-admin');
@@ -135,4 +135,8 @@ Route::middleware(['checkrole:1'])->group(function (){
     
     Route::get('/presensi/harian/export', [C_Prisensi_harian::class, 'exportPrisensiHarian'])->name('export.prisensi.harian');
     Route::get('/presensi/mapel/export', [C_absensi::class, 'exportPrisensiMapel'])->name('export.prisensi.mapel');
+});
+
+Route::middleware(['checkroles:2'])->group(function (){
+    Route::get('/gurudb', [C_guru::class, 'dbguru'])->name('dbguru');
 });

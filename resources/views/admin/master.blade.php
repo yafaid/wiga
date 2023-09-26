@@ -40,9 +40,9 @@
 </head>
 
 <body>
-<div id="loading" class="loading-container">
-  <div class="loading-spinner"></div>
-</div>
+    <div id="loading" class="loading-container">
+        <div class="loading-spinner"></div>
+    </div>
 
     <div id="app">
         <div class="main-wrapper main-wrapper-1">
@@ -103,7 +103,7 @@
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fas fa-book-open"></i><span>Absen</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="{{ route('presensi.harian') }}">Presensi Harian</a></li>                                
+                                <li><a class="nav-link" href="{{ route('presensi.harian') }}">Presensi Harian</a></li>
                                 <li><a class="nav-link" href="{{ route('presensi') }}">Presensi Mapel</a></li>
                             </ul>
                         </li>
@@ -131,7 +131,8 @@
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fas fa-brain"></i><span>Data Mata Pelajaran</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="{{ route('matapelajaran') }}">Data Mata Pelajaran</a></li>
+                                <li><a class="nav-link" href="{{ route('matapelajaran') }}">Data Mata Pelajaran</a>
+                                </li>
                             </ul>
                         </li>
                         {{-- <li class="menu-header">Data Pembelajaran</li>
@@ -193,7 +194,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    
+
 
     <!-- Page Specific JS File -->
 
@@ -203,10 +204,10 @@
     <script src="{{ asset('assets/js/custom.js') }}"></script>
 
     <script>
-    $(document).ready(function() {
-        $('.js-example-basic-multiple').select2();
-        $('#loading').hide();
-    });
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+            $('#loading').hide();
+        });
     </script>
 
 </body>

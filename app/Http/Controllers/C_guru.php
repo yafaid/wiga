@@ -66,4 +66,11 @@ class C_guru extends Controller
         $users = User::where('role_id', 2)->get();
         return response()->json($users);
     }
+
+
+    public function dbguru()
+    {        
+        $guru = Guru::all();
+        return view('guru.dashboard',compact('guru'));
+    }
 }
