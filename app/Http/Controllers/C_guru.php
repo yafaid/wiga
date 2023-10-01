@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Guru;    
 use App\Models\User; 
+use App\Models\Kelas; 
 
 class C_guru extends Controller
 {
@@ -70,7 +71,8 @@ class C_guru extends Controller
 
     public function dbguru()
     {        
+        $kelas = Kelas::all();
         $guru = Guru::all();
-        return view('guru.dashboard',compact('guru'));
+        return view('guru.dashboard',compact('guru','kelas'));
     }
 }

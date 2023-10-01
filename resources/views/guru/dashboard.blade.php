@@ -37,8 +37,99 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+        $('.select2').select2();
+        $('input[name="tanggal_export"]').daterangepicker();
+    });
+
+    $('#tanggal').on('change', function() {
+        $('#kode_kelas').val('').trigger('change.select2');
+    });
+
+    function changeKelas(val) {
+        var tanggal = $('#tanggal').val();
+
+        if (tanggal == '') {
+            Swal.fire({
+                title: 'Error!!',
+                text: 'Tanggal tidak boleh kosong',
+                icon: 'error',
+                timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                showConfirmButton: false // Menyembunyikan tombol OK
+            });
+            $('#kode_kelas').val(''); // Change the value or make some change to the internal state
+            return;
+        }
+        $.ajax({
+            url: "{{ route('get.siswa') }}",
+            method: 'POST',
+            beforeSend: function() {
+                $('#loading').show();
+            },
+            data: {
+                tanggal: tanggal,
+                kelas_id: val,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+
+                $('#tbody').html(response.data);
+                $('#loading').hide();
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    title: 'Error!!',
+                    text: errorMessage,
+                    icon: 'error',
+                    timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                    showConfirmButton: false // Menyembunyikan tombol OK
+                });
+            }
+        });
+    }
+    function buttonPrisensi(id) {
+        var kode_kelas = $('#kode_kelas').val();
+        var tanggal = $('#tanggal').val();
+
+        if (kode_kelas == '' || tanggal == '') {
+            Swal.fire({
+                title: 'Error!!',
+                text: 'Pastikan form sudah terisi semua',
+                icon: 'error',
+                timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                showConfirmButton: false // Menyembunyikan tombol OK
+            });
+            return;
+        }
+        $.ajax({
+            url: "{{ route('simpan.prisensi.siswa') }}",
+            method: "POST",
+            data: {
+                status: id,
+                kode_kelas: kode_kelas,
+                tanggal: tanggal,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+
+            },
+            error: function(data) {
+                Swal.fire({
+                    title: 'Error!!',
+                    text: errorMessage,
+                    icon: 'error',
+                    timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                    showConfirmButton: false // Menyembunyikan tombol OK
+                });
+            }
+        });
+
+    }
+    </script>
 @endsection
-<div class="modal fade" id="absensiModal" tabindex="-1" role="dialog" aria-labelledby="absensiModalLabel" aria-hidden="true">
+<div class="modal fade" id="absensiModal" tabindex="-1" role="dialog" aria-labelledby="absensiModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -48,7 +139,59 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Isi modal absensi di sini -->
+                <form method="POST" action="{{ route('presensi.add') }}" id="form_prisensi">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tanggal">Tanggal:</label>
+                                <input type="date" name="tanggal" id="tanggal" class="form-control"
+                                    onchange="tanggalChange()">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tanggal">Kelas:</label>
+                                <select class="form-control select2" name="kode_kelas" id="kode_kelas"
+                                    onchange="changeKelas(this.value)">
+                                    <option value="">-- Pilih Kode Kelas --</option>
+                                    @foreach ($kelas as $row)
+                                        <option value="{{ $row->id }}">{{ $row->kodekelas }} -
+                                            {{ $row->jurusan->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="tanggal">Mapel:</label>
+                                <select class="form-control select2 " name="kode_mapel" id="kode_mapel"
+                                    onchange="changeMapel(this.value)">
+                                    <option value="">-- Pilih Mapel --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nama Siswa</th>
+                                <th>Hadir</th>
+                                <th>Alpha</th>
+                                <th>Izin</th>
+                                <th>Sakit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                            <tr>
+                                <td colspan="5" class="text-center">Tidak ada data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
