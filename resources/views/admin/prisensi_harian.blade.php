@@ -44,7 +44,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="tanggal">Tanggal:</label>
-                    <input type="date" name="tanggal" id="tanggal" class="form-control" onchange="tanggalChange()">
+                    <input type="date" name="tanggal" id="tanggal" class="form-control" >
                 </div>
             </div>
             <div class="col-md-6">
@@ -101,7 +101,7 @@
                 timer: 2000, // Menutup setelah 2 detik (2000 ms)
                 showConfirmButton: false // Menyembunyikan tombol OK
             });
-            $('#kode_kelas').val(''); // Change the value or make some change to the internal state
+            $('#kode_kelas').val('').trigger('change.select2'); // Change the value or make some change to the internal state
             return;
         }
         $.ajax({
@@ -135,6 +135,8 @@
     function buttonPrisensi(id) {
         var kode_kelas = $('#kode_kelas').val();
         var tanggal = $('#tanggal').val();
+
+        console.log(kode_kelas);
 
         if (kode_kelas == '' || tanggal == '') {
             Swal.fire({
@@ -200,7 +202,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tanggal">Kelas:</label>
-                        <select class="form-control select2" name="kode_kelas" id="kode_kelas">
+                        <select class="form-control select2" name="kode_kelas2" id="kode_kelas2">
                             <option value="">-- Pilih Kode Kelas --</option>
                             @foreach ($kelas as $row)
                             <option value="{{$row->id}}">{{$row->kodekelas}} - {{ $row->jurusan->nama }}</option>

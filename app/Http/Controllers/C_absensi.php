@@ -20,10 +20,12 @@ class C_absensi extends Controller
 
         if(!$data->count() == 0){
             foreach ($data->get() as $key => $value) {
-                $data_user = Presensi::where([ 'siswa_id' => $value->id,'mapel_id' => $request->mapel, 'tanggal' => $request->tanggal]);
-                
+                $data_user = Presensi::where([ 'siswa_id' => $value->id,'mapel_id' => $request->kode_mapel, 'tanggal' => $request->tanggal]);
+
                 if(!$data_user->count() == 0){
                     $user_status = $data_user->first();
+
+                
                     $html .= "<tr>
                                 <td>{$value->nama}</td>
                                 <td><input class='form-check-input' type='radio' " . ($user_status->keterangan == 'hadir' ? 'checked' : '') . " id='{$value->id}_hadir' onclick='buttonPrisensi(this.value)' name='{$value->id}_prisensi' value='{$value->id}_hadir'></td>
