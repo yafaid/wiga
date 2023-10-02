@@ -75,7 +75,7 @@
                     </tr>
                 </thead>
                 <tbody id="tbody">
-                    
+                <td colspan="5" class="text-center">Tidak ada data</td>
                 </tbody>
             </table>
         </form>
