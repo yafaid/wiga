@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Exports;
+
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
@@ -12,56 +14,66 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 class E_Prisensi_harian implements FromCollection, WithHeadings, WithCustomStartCell, WithStyles, WithColumnWidths
 {
     protected $data;
+    protected $startDate;
+    protected $endDate;
 
-    public function __construct($data)
+    public function __construct($data, $startDate, $endDate)
     {
         $this->data = $data;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     public function collection()
     {
-        $count = 0;
+        $dates = $this->generateDateRange($this->startDate, $this->endDate);
         $formattedData = [];
-        $seenNames = [];
 
-        // Mengelompokkan data berdasarkan tanggal
+        // Inisialisasi data kosong untuk setiap tanggal
+        foreach ($dates as $date) {
+            $formattedData[$date] = [
+                'No' => '',
+                'Nama' => '',
+                'Kode Kelas' => '',
+                'Total Kehadiran' => '',
+            ];
+        }
+
+        // Mengisi data kehadiran berdasarkan tanggal
         foreach ($this->data as $item) {
-            if (!in_array($item->nama, $seenNames)) {
-                $seenNames[] = $item->nama; // Tandai nama sebagai "sudah muncul"
-                $formattedData[$item->tanggal][] = [
-                    'count' => ++$count, // Kolom hitungan di kolom A
-                    'nama' => $item->nama,
-                    'kodekelas' => $item->kodekelas,
-                    'total_kehadiran' => $item->total_kehadiran,
-                ];
-            }
+            $formattedData[$item->tanggal]['No'] = ++$count; // Kolom hitungan di kolom A
+            $formattedData[$item->tanggal]['Nama'] = $item->nama;
+            $formattedData[$item->tanggal]['Kode Kelas'] = $item->kodekelas;
+            $formattedData[$item->tanggal][$item->tanggal] = 'a'; // Mengisi kolom tanggal dengan "a"
+            $formattedData[$item->tanggal]['Total Kehadiran'] = $item->total_kehadiran;
         }
-
-      
-    // Tambahkan data "a" di bawah header
-    foreach ($formattedData as &$tanggalData) {
-        foreach ($tanggalData as &$item) {
-            foreach (array_keys($this->data->groupBy('tanggal')->toArray()) as $date) {
-                if ($date !== 'total_kehadiran') {
-                    $item[$date] = 'a'; // Mengisi semua kolom tanggal (selain 'total_kehadiran') dengan "a"
-                }
-            }
-        }
-    }
 
         return collect($formattedData);
     }
 
-    public function headings(): array
+    private function generateDateRange($startDate, $endDate)
     {
-        $dates = array_keys($this->data->groupBy('tanggal')->toArray());
-        $header = ['No', 'Nama', 'Kode Kelas']; // Kolom umum
+        $dates = [];
+        $currentDate = $startDate;
 
-        foreach ($dates as $date) {
-            $header[] = $date; // Tambahkan tanggal ke header
+        while ($currentDate <= $endDate) {
+            $dates[] = $currentDate;
+            $currentDate = date('Y-m-d', strtotime($currentDate . ' +1 day'));
         }
 
-        $header[] = 'Total Kehadiran'; // Kolom total kehadiran
+        return $dates;
+    }
+
+    public function headings(): array
+    {
+        $dates = $this->generateDateRange($this->startDate, $this->endDate);
+        $header = ['No', 'Nama', 'Kode Kelas'];
+
+        foreach ($dates as $date) {
+            $header[$date] = $date; // Tambahkan tanggal ke header
+        }
+
+        $header['Total Kehadiran'] = 'Total Kehadiran';
 
         return $header;
     }
@@ -77,7 +89,7 @@ class E_Prisensi_harian implements FromCollection, WithHeadings, WithCustomStart
         $sheet->getStyle($sheet->calculateWorksheetDimension())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         return [
-            '1' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER]], 
+            '1' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER]],
         ];
     }
 
@@ -87,21 +99,20 @@ class E_Prisensi_harian implements FromCollection, WithHeadings, WithCustomStart
             'A' => 15, // Mengatur lebar kolom A menjadi 15
             'B' => 15, // Mengatur lebar kolom B menjadi 15
             'C' => 25, // Mengatur lebar kolom C menjadi 25
-            'D' => 25, // Mengatur lebar kolom D menjadi 25
-            'E' => 25, // Mengatur lebar kolom E menjadi 25 (sesuaikan dengan kebutuhan Anda)
         ];
     }
 
     public function columnFormats(): array
     {
-        $dateColumns = range('E', 'Z');
+        $dateColumns = range('D', 'Z');
         $formats = [
             'A' => NumberFormat::FORMAT_NUMBER, // Format untuk kolom hitungan
             'B' => NumberFormat::FORMAT_TEXT,   // Format untuk kolom nama (teks)
+            'C' => NumberFormat::FORMAT_TEXT,   // Format untuk kolom Kode Kelas (teks)
         ];
 
         foreach ($dateColumns as $column) {
-            $formats[$column] = NumberFormat::FORMAT_NUMBER; // Format untuk kolom tanggal
+            $formats[$column] = NumberFormat::FORMAT_TEXT; // Format untuk kolom tanggal
         }
 
         $formats['Z'] = NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1; // Format untuk kolom Total Kehadiran

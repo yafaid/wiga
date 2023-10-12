@@ -130,7 +130,7 @@ Route::middleware(['checkroles:1'])->group(function (){
     Route::get('/presensi/harian', [C_Prisensi_harian::class, 'index'])->name('presensi.harian');
     Route::Post('/presensi/get-siswa', [C_Prisensi_harian::class, 'getSiswa'])->name('get.siswa'); 
     Route::Post('/presensi/simpan-prisensi-siswa', [C_Prisensi_harian::class, 'storeData'])->name('simpan.prisensi.siswa'); 
-    
+    Route::get('/presensi/view', [C_Prisensi_harian::class, 'viewTable'])->name('harian.view');
     
     
     Route::get('/presensi/harian/export', [C_Prisensi_harian::class, 'exportPrisensiHarian'])->name('export.prisensi.harian');
@@ -139,4 +139,5 @@ Route::middleware(['checkroles:1'])->group(function (){
 
 Route::middleware(['checkroles:2'])->group(function (){
     Route::get('/gurudb', [C_guru::class, 'dbguru'])->name('dbguru');
+
 });

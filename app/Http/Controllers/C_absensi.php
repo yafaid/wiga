@@ -113,5 +113,8 @@ class C_absensi extends Controller
 
     return Excel::download(new E_Prisens_mapel($data), 'dataabsensimapel.xlsx');
 }
+    public function viewTable(){
+        return view('admin.profil');
+    }
  
 }

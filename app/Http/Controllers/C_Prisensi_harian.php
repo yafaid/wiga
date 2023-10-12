@@ -99,4 +99,8 @@ class C_Prisensi_harian extends Controller
 
         return Excel::download(new E_Prisensi_harian($data), 'dataharian.xlsx');
     }
+
+    public function viewTable(){
+        return view('admin.harianview');
+    }
 }

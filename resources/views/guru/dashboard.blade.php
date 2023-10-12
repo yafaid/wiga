@@ -39,94 +39,117 @@
     </div>
     <script>
         $(document).ready(function() {
-        $('.select2').select2();
-        $('input[name="tanggal_export"]').daterangepicker();
-    });
-
-    $('#tanggal').on('change', function() {
-        $('#kode_kelas').val('').trigger('change.select2');
-    });
-
-    function changeKelas(val) {
-        var tanggal = $('#tanggal').val();
-
-        if (tanggal == '') {
-            Swal.fire({
-                title: 'Error!!',
-                text: 'Tanggal tidak boleh kosong',
-                icon: 'error',
-                timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                showConfirmButton: false // Menyembunyikan tombol OK
-            });
-            $('#kode_kelas').val(''); // Change the value or make some change to the internal state
-            return;
-        }
-        $.ajax({
-            url: "{{ route('get.siswa') }}",
-            method: 'POST',
-            beforeSend: function() {
-                $('#loading').show();
-            },
-            data: {
-                tanggal: tanggal,
-                kelas_id: val,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-
-                $('#tbody').html(response.data);
-                $('#loading').hide();
-            },
-            error: function(xhr, status, error) {
-                Swal.fire({
-                    title: 'Error!!',
-                    text: errorMessage,
-                    icon: 'error',
-                    timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                    showConfirmButton: false // Menyembunyikan tombol OK
-                });
-            }
+            $('.select2').select2();
         });
-    }
-    function buttonPrisensi(id) {
-        var kode_kelas = $('#kode_kelas').val();
-        var tanggal = $('#tanggal').val();
-
-        if (kode_kelas == '' || tanggal == '') {
-            Swal.fire({
-                title: 'Error!!',
-                text: 'Pastikan form sudah terisi semua',
-                icon: 'error',
-                timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                showConfirmButton: false // Menyembunyikan tombol OK
-            });
-            return;
+    
+        function changeTanggal(){
+            $('#kode_mapel').val('');
+            $('#kode_kelas').val('').trigger('change.select2');
+            $('#tbody').html('<td colspan="5" class="text-center">Tidak ada data</td>');
+        };
+    
+        function changeKelas(val){
+            var tanggal = $('#tanggal').val();
+            $.ajax({
+                        url: "{{ route('get.mapel') }}",
+                        method: 'POST',
+                        data: {
+                            tanggal: tanggal,
+                            kelas_id: val,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+    
+                            $('#kode_mapel').html(response.data);
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                title: 'Error!!',
+                                text: errorMessage,
+                                icon: 'error',
+                                timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                                showConfirmButton: false // Menyembunyikan tombol OK
+                            });
+                        }
+                    });
+                }
+    
+        function changeMapel(val)
+        {
+            var tanggal = $('#tanggal').val();
+            var kode_kelas = $('#kode_kelas').val();
+            var kode_mapel = $('#kode_mapel').val();
+              $.ajax({
+                        url: "{{ route('get.kelas') }}",
+                        method: 'POST',
+                        data: {
+                            kode_mapel: kode_mapel,
+                            tanggal: tanggal,
+                            kelas_id: kode_kelas,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+    
+                            $('#tbody').html(response.data);
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                title: 'Error!!',
+                                text: errorMessage,
+                                icon: 'error',
+                                timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                                showConfirmButton: false // Menyembunyikan tombol OK
+                            });
+                        }
+                    });
         }
-        $.ajax({
-            url: "{{ route('simpan.prisensi.siswa') }}",
-            method: "POST",
-            data: {
-                status: id,
-                kode_kelas: kode_kelas,
-                tanggal: tanggal,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(data) {
-
-            },
-            error: function(data) {
-                Swal.fire({
-                    title: 'Error!!',
-                    text: errorMessage,
-                    icon: 'error',
-                    timer: 2000, // Menutup setelah 2 detik (2000 ms)
-                    showConfirmButton: false // Menyembunyikan tombol OK
-                });
+          
+    
+        </script>
+    
+        <script>
+            function buttonPrisensi(id)
+            {
+                var mapel = $('#kode_mapel').val();
+                var kode_kelas = $('#kode_kelas').val();
+                var tanggal = $('#tanggal').val();
+    
+                if(mapel == '' || kode_kelas == '' || tanggal == ''){
+                    Swal.fire({
+                                title: 'Error!!',
+                                text: 'pastikan form sudah terisi semua',
+                                icon: 'error',
+                                timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                                showConfirmButton: false // Menyembunyikan tombol OK
+                            });
+                    return;
+                }
+                        $.ajax({
+                                url: "{{ route('simpan.prisensi') }}",
+                                method: "POST",
+                                data:  {
+                                    status: id,
+                                    mapel: mapel,
+                                    kode_kelas: kode_kelas,
+                                    tanggal: tanggal,
+                                     _token: $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function(data) {
+                                    
+                                },
+                                error: function(data){
+                                    Swal.fire({
+                                        title: 'Error!!',
+                                        text: errorMessage,
+                                        icon: 'error',
+                                        timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                                        showConfirmButton: false // Menyembunyikan tombol OK
+                                    });
+                                }
+                            });
+    
             }
-        });
-
-    }
-    </script>
+        </script>
 @endsection
 <div class="modal fade" id="absensiModal" tabindex="-1" role="dialog" aria-labelledby="absensiModalLabel"
     aria-hidden="true">
