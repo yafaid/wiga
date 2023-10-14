@@ -1,45 +1,147 @@
 @extends('admin.master')
 @section('judul_halaman', 'View Data Kehadiran')
 @section('header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 @endsection
 @section('konten')
-    <div class="section-header">
-        <h1>Tabel Kehadiran Harian</h1>
-        <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="{{ route('dbadmin') }}">Dashboard</a></div>
-            <div class="breadcrumb-item active"><a href="{{ route('presensi.harian') }}">Presensi Harian</a></div>
-            <div class="breadcrumb-item">Tabel Kehadiran Harian</div>
-        </div>
+<style>
+    .pertemuan {
+        background-color: gray;
+        color: white;
+        text-align: center;
+
+    }
+
+    .head {
+        background-color: #4287f5;
+        color: white;
+        text-align: center;
+    }
+    .h{
+        background-color: #73e693;
+        color: white;
+        text-align: center;
+    }
+    .i{
+        background-color: #b681e6;
+        color: white;
+        text-align: center;
+    }
+    .a{
+        background-color: #e6634c;
+        color: white;
+        text-align: center;
+    }
+    .t{
+        background-color: #e3d449;
+        color: white;
+        text-align: center;
+    }
+</style>
+<div class="section-header">
+    <h1>Tabel Kehadiran Harian</h1>
+    <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="{{ route('dbadmin') }}">Dashboard</a></div>
+        <div class="breadcrumb-item active"><a href="{{ route('presensi.harian') }}">Presensi Harian</a></div>
+        <div class="breadcrumb-item">Tabel Kehadiran Harian</div>
     </div>
-    <div class="section-body">
-        <div class="card">
-            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+</div>
+<div class="section-body">
+    <div class="card">
+        <div class="card-header">
+            <div>
                 <h4>Data Kehadiran</h4>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-start mb-2 mt-2">
                 <div>
-                    {{-- <a href="#" id="tambahTP" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus"></i>
-                        Tambah
-                        Data</a> --}}
+                    <select name="kelas" class="form-control select2" id="kelas" onchange="kelasChange(this.value)">
+                        <option value="" disabled selected>Pilih Kelas</option>
+                        @foreach ($kelas as $row)
+                        <option value="{{$row->id}}">{{$row->kodekelas}} - {{ $row->jurusan->nama }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-            <div class="card-body">
-                <table class="table table-hover" id="table-tahun">
+            <div class="table-responsive ">
+                <table class="table table-bordered" id="table-tahun">
                     <thead>
                         <tr>
-                            <th>Nama Siswa</th>
-                            <th>Kelas</th>
-                            <th>Tanggal</th>
-                            <th>Keterangan</th>
+                            <td class="head" rowspan="2">NIS</td>
+                            <td class="head" rowspan="2">Nama Siswa</td>
+                            <td class="head" rowspan="2">L/P</td>
+                            <td class="head" colspan="4" class="text-center">Pertemuan</td>
+                            <td class="head" colspan="5" class="text-center">Jumlah</td>
+                        </tr>
+                        <tr>
+                            <td class="pertemuan">1</td>
+                            <td class="pertemuan">2</td>
+                            <td class="pertemuan">3</td>
+                            <td class="pertemuan">4</td>
+                            <td class="h">H</td>
+                            <td class="head">S</td>
+                            <td class="i">I</td>
+                            <td class="a">A</td>
+                            <td class="t">T</td>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr>
+                            <td>asd</td>
+                            <td>sd</td>
+                            <td>sd</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>sds</td>
+                            <td>sds</td>
+                            <td>sds</td>
+                            <td>sds</td>
+                            <td>sds</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
-            <div class="card-footer">
 
-            </div>
+
+        </div>
+        <div class="card-footer">
+
         </div>
     </div>
-    <script></script>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+    function kelasChange(val)
+    {
+        $.ajax({
+                    url: "{{ route('harian.show') }}",
+                    method: 'POST',
+                    data: {
+                        id: val,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+
+                        $('#kode_mapel').html(response.data);
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!!',
+                            text: errorMessage,
+                            icon: 'error',
+                            timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                            showConfirmButton: false // Menyembunyikan tombol OK
+                        });
+                    }
+                });
+    }
+</script>
 @endsection

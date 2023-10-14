@@ -100,7 +100,45 @@ class C_Prisensi_harian extends Controller
         return Excel::download(new E_Prisensi_harian($data), 'dataharian.xlsx');
     }
 
+    public function showPrisensi(Request $request)
+    {
+        $id = $request->id;
+
+        $data = Presensi_harian::join('siswa', 'presensi_harian.siswa_id', '=', 'siswa.id')
+                ->where('presensi_harian.kelas_id', $id)
+                ->whereMonth('presensi_harian.tanggal', '=', now()->month);
+        $total= 0;
+        $arrayData = [];
+        foreach($data->get() as $key => $val)
+        {
+            $arrayData[$key]['id'] = $val->id;
+            $arrayData[$key]['siswa_id'] = $val->siswa_id;
+            $arrayData[$key]['kelas_id'] = $val->kelas_id;
+            $arrayData[$key]['keterangan'] = $val->keterangan;
+            $arrayData[$key]['nisn'] = $val->nisn;
+            $arrayData[$key]['nama'] = $val->nama;
+            $arrayData[$key]['jeniskelamin'] = $val->jeniskelamin;
+            $dataCount = Presensi_harian::select('siswa_id')
+                ->selectRaw('SUM(CASE WHEN keterangan = "hadir" THEN 1 ELSE 0 END) AS total_hadir')
+                ->selectRaw('SUM(CASE WHEN keterangan = "izin" THEN 1 ELSE 0 END) AS total_izin')
+                ->selectRaw('SUM(CASE WHEN keterangan = "sakit" THEN 1 ELSE 0 END) AS total_sakit')
+                ->selectRaw('SUM(CASE WHEN keterangan = "alpha" THEN 1 ELSE 0 END) AS total_alpha')
+                ->where('siswa_id', $val->siswa_id)
+                ->groupBy('siswa_id')
+                ->first();
+
+                $arrayData[$key]['total_hadir'] = $dataCount->total_hadir;
+                $arrayData[$key]['total_izin'] = $dataCount->total_izin;
+                $arrayData[$key]['total_sakit'] = $dataCount->total_sakit;
+                $arrayData[$key]['total_alpha'] = $dataCount->total_alpha;
+            $total++;
+        }
+
+        print_r($arrayData);
+    }
+
     public function viewTable(){
-        return view('admin.harianview');
+        $kelas = Kelas::get();
+        return view('admin.harianview',['kelas' => $kelas]);
     }
 }
