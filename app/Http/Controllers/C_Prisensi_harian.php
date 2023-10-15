@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Presensi_harian;
+use Illuminate\Support\Facades\DB;
 
 class C_Prisensi_harian extends Controller
 {
@@ -103,15 +104,26 @@ class C_Prisensi_harian extends Controller
     public function showPrisensi(Request $request)
     {
         $id = $request->id;
+        $dateRange = $request->dates;
+        if (preg_match('/(\d{1,2}\/\d{1,2}\/\d{4}) - (\d{1,2}\/\d{1,2}\/\d{4})/', $dateRange, $matches)) {
+
+            $startDate = date('Y-m-d', strtotime($matches[1]));
+            $endDate = date('Y-m-d', strtotime($matches[2]));
+        }
 
         $data = Presensi_harian::join('siswa', 'presensi_harian.siswa_id', '=', 'siswa.id')
                 ->where('presensi_harian.kelas_id', $id)
-                ->whereMonth('presensi_harian.tanggal', '=', now()->month);
+                ->whereBetween('presensi_harian.tanggal', [$startDate, $endDate])
+                ->orderBy('presensi_harian.tanggal', 'ASC');
         $total= 0;
         $arrayData = [];
+
+
         foreach($data->get() as $key => $val)
         {
             $arrayData[$key]['id'] = $val->id;
+            $arrayData[$key]['tanggal'] = $val->tanggal;
+            $arrayData[$key]['keterangan'] = $val->keterangan;
             $arrayData[$key]['siswa_id'] = $val->siswa_id;
             $arrayData[$key]['kelas_id'] = $val->kelas_id;
             $arrayData[$key]['keterangan'] = $val->keterangan;
@@ -134,7 +146,79 @@ class C_Prisensi_harian extends Controller
             $total++;
         }
 
-        print_r($arrayData);
+
+
+        
+
+        $thead = '';
+        $dataSiswa = '';
+        $nisnProcessed = [];
+        $nisnTanggal= [];
+        $total_pertemuan = 0;
+        foreach ($arrayData as $key => $val) {
+
+            if (!in_array($val['tanggal'], $nisnTanggal)) {
+                $thead .=   '<td class="pertemuan">'.$val['tanggal'].'</td>';
+                $total_pertemuan++;
+                $nisnTanggal[] = $val['tanggal'];
+            }
+
+        }
+        foreach ($arrayData as $key => $val) {
+
+            if (!in_array($val['nisn'], $nisnProcessed)) {
+
+                $data2 = Presensi_harian::join('siswa', 'presensi_harian.siswa_id', '=', 'siswa.id')
+                ->where(['presensi_harian.kelas_id' => $id, 'nisn' => $val['nisn']])
+                ->whereBetween('presensi_harian.tanggal', [$startDate, $endDate])
+                ->orderBy('presensi_harian.tanggal', 'ASC');
+
+                $dataKehadiran = trim('');
+                foreach($data2->get() as $val2){
+                    $dataKehadiran .= '<td>' . $val2->keterangan . '</td>';
+                }
+
+                $dataSiswa .= '<tr>
+                    <td>' . $val['nisn'] . '</td>
+                    <td>' . $val['nama'] . '</td>
+                    <td>' . $val['jeniskelamin'] . '</td>
+                    ' . $dataKehadiran . '
+                    <td>' . $val['total_hadir'] . '</td>
+                    <td>' . $val['total_izin'] . '</td>
+                    <td>' . $val['total_sakit'] . '</td>
+                    <td>' . $val['total_alpha'] . '</td>
+                </tr>';
+        
+                $nisnTanggal[] = $val['tanggal'];
+                $nisnProcessed[] = $val['nisn'];
+            }
+
+        }
+
+
+        $tabel_data = '      <table class="table table-bordered" id="table-tahun">
+        <thead>
+            <tr>
+                <td class="head" rowspan="2">NIS</td>
+                <td class="head" rowspan="2">Nama Siswa</td>
+                <td class="head" rowspan="2">L/P</td>
+                <td class="head" colspan="'.$total_pertemuan.'" class="text-center">Pertemuan</td>
+                <td class="head" colspan="5" class="text-center">Jumlah</td>
+            </tr>
+            <tr>
+            '.$thead.'
+                <td class="h">H</td>
+                <td class="head">S</td>
+                <td class="i">I</td>
+                <td class="a">A</td>
+            </tr>
+        </thead>
+        <tbody>
+        '.$dataSiswa.'
+        </tbody>
+    </table>';
+
+    return response()->json(['message' => 'Jurusan berhasil diedit', 'data' => $tabel_data]);
     }
 
     public function viewTable(){
