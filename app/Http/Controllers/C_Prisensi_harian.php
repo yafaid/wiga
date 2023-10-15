@@ -136,6 +136,7 @@ class C_Prisensi_harian extends Controller
                 ->selectRaw('SUM(CASE WHEN keterangan = "sakit" THEN 1 ELSE 0 END) AS total_sakit')
                 ->selectRaw('SUM(CASE WHEN keterangan = "alpha" THEN 1 ELSE 0 END) AS total_alpha')
                 ->where('siswa_id', $val->siswa_id)
+                ->whereBetween('tanggal', [$startDate, $endDate])
                 ->groupBy('siswa_id')
                 ->first();
 
