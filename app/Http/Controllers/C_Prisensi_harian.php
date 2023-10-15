@@ -131,19 +131,24 @@ class C_Prisensi_harian extends Controller
             $arrayData[$key]['nama'] = $val->nama;
             $arrayData[$key]['jeniskelamin'] = $val->jeniskelamin;
             $dataCount = Presensi_harian::select('siswa_id')
-                ->selectRaw('SUM(CASE WHEN keterangan = "hadir" THEN 1 ELSE 0 END) AS total_hadir')
-                ->selectRaw('SUM(CASE WHEN keterangan = "izin" THEN 1 ELSE 0 END) AS total_izin')
-                ->selectRaw('SUM(CASE WHEN keterangan = "sakit" THEN 1 ELSE 0 END) AS total_sakit')
-                ->selectRaw('SUM(CASE WHEN keterangan = "alpha" THEN 1 ELSE 0 END) AS total_alpha')
-                ->where('siswa_id', $val->siswa_id)
-                ->whereBetween('tanggal', [$startDate, $endDate])
-                ->groupBy('siswa_id')
-                ->first();
+            ->selectRaw('SUM(CASE WHEN keterangan = "hadir" THEN 1 ELSE 0 END) AS total_hadir')
+            ->selectRaw('SUM(CASE WHEN keterangan = "izin" THEN 1 ELSE 0 END) AS total_izin')
+            ->selectRaw('SUM(CASE WHEN keterangan = "sakit" THEN 1 ELSE 0 END) AS total_sakit')
+            ->selectRaw('SUM(CASE WHEN keterangan = "alpha" THEN 1 ELSE 0 END) AS total_alpha')
+            ->selectRaw('SUM(CASE WHEN keterangan = "hadir" THEN 1 ELSE 0 END +
+                             CASE WHEN keterangan = "izin" THEN 1 ELSE 0 END +
+                             CASE WHEN keterangan = "sakit" THEN 1 ELSE 0 END +
+                             CASE WHEN keterangan = "alpha" THEN 1 ELSE 0 END) AS total')
+            ->where('siswa_id', $val->siswa_id)
+            ->whereBetween('tanggal', [$startDate, $endDate])
+            ->groupBy('siswa_id')
+            ->first();
 
                 $arrayData[$key]['total_hadir'] = $dataCount->total_hadir;
                 $arrayData[$key]['total_izin'] = $dataCount->total_izin;
                 $arrayData[$key]['total_sakit'] = $dataCount->total_sakit;
                 $arrayData[$key]['total_alpha'] = $dataCount->total_alpha;
+                $arrayData[$key]['total'] = $dataCount->total;
             $total++;
         }
 
@@ -188,6 +193,7 @@ class C_Prisensi_harian extends Controller
                     <td>' . $val['total_izin'] . '</td>
                     <td>' . $val['total_sakit'] . '</td>
                     <td>' . $val['total_alpha'] . '</td>
+                    <td>' . $val['total'] . '</td>
                 </tr>';
         
                 $nisnTanggal[] = $val['tanggal'];
@@ -212,6 +218,7 @@ class C_Prisensi_harian extends Controller
                 <td class="head">S</td>
                 <td class="i">I</td>
                 <td class="a">A</td>
+                <td class="t">T</td>
             </tr>
         </thead>
         <tbody>
