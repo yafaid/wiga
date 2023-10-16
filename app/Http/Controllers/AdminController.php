@@ -3,16 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use App\Models\Jurusan;
 use App\Models\Kelas;
-use App\Models\ThnPel;
 use App\Models\Mapel;
 use App\Models\Guru;
-use App\Models\GuruMapel;
 use App\Models\Siswa;
 use App\Models\Presensi;
 use App\Models\User;
@@ -51,18 +46,23 @@ class AdminController extends Controller
         $user = auth()->user();
         $currentPassword = $request->input('currentPassword');
         $newPassword = $request->input('newPassword');
+
         if (!Hash::check($currentPassword, $user->password)) {
             throw ValidationException::withMessages([
                 'currentPassword' => 'Password saat ini salah.'
             ]);
         }
+
         $user->password = Hash::make($newPassword);
         $user->save();
+
         return response()->json(['message' => 'Password berhasil diubah.']);
     }
+
+    // Metode untuk mengganti username
     public function changeUsername(Request $request)
     {
-        $user = Auth::user();
+        $user = auth()->user();
         $currentUsername = $request->input('currentUsername');
         $newUsername = $request->input('newUsername');
 
@@ -78,6 +78,7 @@ class AdminController extends Controller
         return response()->json(['message' => 'Username berhasil diubah.']);
     }
 
+    
 
     //PRESENSI
     public function presensi()

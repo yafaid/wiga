@@ -5,10 +5,12 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>@yield('judul_halaman')</title>
-
+    @yield('header')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- General CSS Files -->
     <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
+
 
     <!-- CSS Libraries -->
 
@@ -46,7 +48,7 @@
                         <i class="fas fa-ellipsis-v"></i>
                     </a>
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a href="#" class="nav-link">Dashboard</a></li>
+                        <li class="nav-item"><a href="{{ route('dbguru') }}" class="nav-link">Dashboard</a></li>
                     </ul>
                 </div>
                 <form class="form-inline ml-auto">
@@ -62,7 +64,7 @@
                                 <div class="dropdown-title">Logged in {{ Auth::user()->last_login_at->diffInMinutes() }}
                                     min ago</div>
                             @endif
-                            <a href="{{ route('profil') }}" class="dropdown-item has-icon">
+                            <a href="{{ route('profilguru') }}" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
@@ -92,13 +94,30 @@
     </div>
 
     <!-- General JS Scripts -->
-    <script src="assets/modules/jquery.min.js"></script>
-    <script src="assets/modules/popper.js"></script>
-    <script src="assets/modules/tooltip.js"></script>
-    <script src="assets/modules/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-    <script src="assets/modules/moment.min.js"></script>
-    <script src="assets/js/stisla.js"></script>
+    <!-- General JS Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/assets/modules/jquery.min.js"></script>
+    <script src="/assets/modules/popper.js"></script>
+    <script src="/assets/modules/tooltip.js"></script>
+    <script src="/assets/modules/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="/assets/modules/moment.min.js"></script>
+    <script src="/assets/js/stisla.js"></script>
+
+    <!-- JS Libraies -->
+    <script src="/assets/modules/simple-weather/jquery.simpleWeather.min.js"></script>
+    <script src="/assets/modules/chart.min.js"></script>
+    <script src="/assets/modules/jqvmap/dist/jquery.vmap.min.js"></script>
+    <script src="/assets/modules/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="/assets/modules/summernote/summernote-bs4.js"></script>
+    <script src="/assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     <!-- JS Libraies -->
 

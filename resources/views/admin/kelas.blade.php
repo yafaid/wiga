@@ -23,7 +23,7 @@
                             class="fas fa-plus"></i>
                         Tambah
                         Data</a>
-                    <a href="#" class="btn btn-icon icon-left btn-dark"><i class="far fa-file"></i> Print</a>
+                    {{-- <a href="#" class="btn btn-icon icon-left btn-dark"><i class="far fa-file"></i> Print</a> --}}
                 </div>
             </div>
             <div class="card-body">

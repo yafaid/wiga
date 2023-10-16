@@ -1,19 +1,11 @@
-@extends('admin.master')
-@section('judul_halaman', 'Profil')
+@extends('guru.master')
+@section('judul_halaman', 'Absensi')
 @section('header')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 @endsection
-
 @section('konten')
-    <div class="section-header">
-        <h1>Profil</h1>
-        <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="{{ route('dbadmin') }}">Dashboard</a></div>
-            <div class="breadcrumb-item">Profile</div>
-        </div>
-    </div>
     <div class="section-body">
         <h2 class="section-title">Hi,{{ Auth::user()->name }}</h2>
         <p class="section-lead">
@@ -41,7 +33,6 @@
                 </div>
             </div>
         </div>
-        <!-- Pastikan Anda telah mengimpor pustaka Swal -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
         <script>
@@ -80,18 +71,15 @@
                 }
 
                 $("#submitFormButtonPw").on("click", function() {
-                    handleFormSubmission("#changePasswordForm", "gantipw", "Password berhasil diubah.");
+                    handleFormSubmission("#changePasswordForm", "gurugantipw", "Password berhasil diubah.");
                 });
 
                 $("#submitFormButtonUser").on("click", function() {
-                    handleFormSubmission("#changeUsernameForm", "gantiuname", "Username berhasil diubah.");
+                    handleFormSubmission("#changeUsernameForm", "gurugantiuname", "Username berhasil diubah.");
                 });
             });
         </script>
-
     @endsection
-
-    <!-- Modal -->
     <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"
         aria-labelledby="changePasswordModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog" role="document">

@@ -140,5 +140,17 @@ Route::middleware(['checkroles:1'])->group(function (){
 
 Route::middleware(['checkroles:2'])->group(function (){
     Route::get('/gurudb', [C_guru::class, 'dbguru'])->name('dbguru');
+    Route::get('/guruabsen', [AdminController::class, 'presensi'])->name('guru.presensi');
+    Route::post('/guruabsen', [AdminController::class, 'storePresensi'])->name('guru.presensi.add'); 
+    Route::Post('/guruabsen/get-kelas', [C_absensi::class, 'index'])->name('guru.get.kelas'); 
+    Route::Post('/guruabsen/get-mapel', [C_absensi::class, 'selectMapel'])->name('guru.get.mapel'); 
+    Route::Post('/guruabsen/simpan-prisensi', [C_absensi::class, 'simpanData'])->name('guru.simpan.prisensi');
+
+    Route::get('/guruviewabsen', [C_guru::class, 'viewabsen'])->name('viewabsen');
+    Route::Post('/gurupresensi/show', [C_Prisensi_harian::class, 'showPrisensi'])->name('guru.harian.show');
+
+    Route::get('/guruprofil', [C_guru::class, 'profil'])->name('profilguru');
+    Route::post('/gurugantipw', [AdminController::class, 'changePassword'])->name('gurugantipw');
+    Route::post('/gurugantiuname', [AdminController::class, 'changeUsername'])->name('gurugantiuname');
 
 });
