@@ -40,7 +40,11 @@
         <div class="main-wrapper container">
             <div class="navbar-bg"></div>
             <nav class="navbar navbar-expand-lg main-navbar">
+<<<<<<< HEAD
                 <a href="index.html" class="navbar-brand sidebar-gone-hide">Wiga</a>
+=======
+                <a href="index.html" class="navbar-brand sidebar-gone-hide">WIGA</a>
+>>>>>>> 67a965a3d8daf787dd3f970a004f3fb1250c181c
                 <a href="#" class="nav-link sidebar-gone-show" data-toggle="sidebar"><i
                         class="fas fa-bars"></i></a>
                 <div class="nav-collapse">
