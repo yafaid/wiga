@@ -12,7 +12,20 @@
     <div class="section-body">
         <div class="row">
             <div class="col-lg-6">
-                <div class="card">
+                <div class="card card-statistic-1">
+                    <div class="card-icon bg-primary">
+                        <i class="far fa-user"></i>
+                    </div>
+                    <div class="card-wrap" data-toggle="modal" data-target="#absensiModal">
+                        <div class="card-header">
+                            <h4>Total Siswa Aktif</h4>
+                        </div>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
+                {{-- <div class="card">
                     <div class="card-wrap" data-toggle="modal" data-target="#absensiModal">
                         <div class="card-header">
                             <h4>Absensi</h4>
@@ -21,7 +34,7 @@
                             Absen untuk Siswa
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="col-lg-6">
                 <div class="card">
