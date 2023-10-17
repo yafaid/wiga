@@ -33,6 +33,8 @@ class CekRolesMiddleware
             return redirect('/admin');
         } elseif ($user->role_id == 2) {
             return redirect('/gurudb');
+        } elseif ($user->role_id == 3) {
+            return redirect('/siswadb');
         }
     }
 }

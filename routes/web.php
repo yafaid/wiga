@@ -154,3 +154,7 @@ Route::middleware(['checkroles:2'])->group(function (){
     Route::post('/gurugantiuname', [AdminController::class, 'changeUsername'])->name('gurugantiuname');
 
 });
+
+Route::middleware(['checkroles:3'])->group(function (){
+    Route::get('/siswadb', [C_siswa::class, 'dbsiswa'])->name('dbsiswa');
+});

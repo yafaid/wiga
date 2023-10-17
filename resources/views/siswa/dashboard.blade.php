@@ -1,4 +1,4 @@
-@extends('guru.master')
+@extends('siswa.master')
 @section('judul_halaman', 'Dashboard')
 @section('header')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -11,7 +11,7 @@
     </div>
     <div class="section-body">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-wrap" data-toggle="modal" data-target="#absensiModal">
                         <div class="card-header">
@@ -21,20 +21,6 @@
                             Absen untuk Siswa
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card">
-                    <a href="{{ route('viewabsen') }}" style="text-decoration: none; color: inherit;">
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>View Absensi</h4>
-                            </div>
-                            <div class="card-body">
-                                Lihat Absen untuk Siswa
-                            </div>
-                        </div>
-                    </a>
                 </div>
             </div>
         </div>

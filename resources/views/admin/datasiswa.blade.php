@@ -30,7 +30,7 @@
                 <table class="table table-hover" id="table-siswa">
                     <thead>
                         <tr>
-                            <th>NISN</th>
+                            <th>NIS</th>
                             <th>Nama</th>
                             <th>JK</th>
                             <th>Kelas</th>
@@ -304,7 +304,7 @@
                 <form id="addForm">
                     @csrf
                     <div class="form-group">
-                        <label for="tambah">NISN</label>
+                        <label for="tambah">NIS</label>
                         <input type="text" class="form-control" id="tambahNisn" name="nisn">
                     </div>
                     <div class="form-group">

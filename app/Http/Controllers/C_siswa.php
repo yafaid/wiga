@@ -81,4 +81,10 @@ class C_siswa extends Controller
         $users = User::where('role_id', 3)->get();
         return response()->json($users);
     }
+    public function dbsiswa()
+    {
+        $kelas = Kelas::all();
+        $guru = Guru::all();
+        return view('siswa.dashboard', compact('guru', 'kelas'));
+    }
 }
