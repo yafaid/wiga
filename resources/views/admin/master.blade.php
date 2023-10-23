@@ -140,14 +140,14 @@
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fas fa-atom"></i><span>Data Pembelajaran</span></a>
                         </li> --}}
-                        <li class="menu-header">Data Tahun Pembelajaran</li>
+                        {{-- <li class="menu-header">Data Tahun Pembelajaran</li>
                         <li class="dropdown">
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fas fa-list-ol"></i><span>Data Tahun</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="{{ route('tahunpelajaran') }}">Data Tahun</a></li>
                             </ul>
-                        </li>
+                        </li> --}}
                         <li class="menu-header">Data Admin</li>
                         <li><a class="nav-link" href="{{ route('admin') }}"><i class="fas fa-user"></i>
                                 <span>Admin</span></a></li>
