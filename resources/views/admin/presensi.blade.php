@@ -31,6 +31,10 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 mt-2 mb-2 d-flex flex-row-reverse">
+                <a href="{{ route('absenmapel.view') }}" class="btn btn-icon icon-left btn-primary">
+                    Lihat Data</a>
+            </div>
         </div>
 
         <form method="POST" action="{{ route('presensi.add') }}" id="form_prisensi">

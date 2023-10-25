@@ -126,6 +126,8 @@ Route::middleware(['checkroles:1'])->group(function (){
     Route::Post('/presensi/get-kelas', [C_absensi::class, 'index'])->name('get.kelas'); 
     Route::Post('/presensi/get-mapel', [C_absensi::class, 'selectMapel'])->name('get.mapel'); 
     Route::Post('/presensi/simpan-prisensi', [C_absensi::class, 'simpanData'])->name('simpan.prisensi'); 
+    Route::get('/presensi/viewmapel', [C_absensi::class, 'viewTable'])->name('absenmapel.view');
+    Route::Post('/presensi/showmapel', [C_absensi::class, 'showPrisensi'])->name('absenmapel.show');
     
     Route::get('/presensi/harian', [C_Prisensi_harian::class, 'index'])->name('presensi.harian');
     Route::Post('/presensi/get-siswa', [C_Prisensi_harian::class, 'getSiswa'])->name('get.siswa'); 

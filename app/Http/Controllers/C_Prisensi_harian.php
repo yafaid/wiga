@@ -6,6 +6,7 @@ use Excel;
 use App\Exports\E_Prisensi_harian;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
+use App\Models\Mapel;
 use App\Models\Siswa;
 use App\Models\Presensi_harian;
 use Illuminate\Support\Facades\DB;
@@ -230,7 +231,7 @@ class C_Prisensi_harian extends Controller
     }
 
     public function viewTable(){
-        $kelas = Kelas::get();
+        $kelas = Kelas::get();        
         return view('admin.harianview',['kelas' => $kelas]);
     }
 }
