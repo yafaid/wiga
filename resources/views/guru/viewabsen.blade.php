@@ -48,6 +48,9 @@
             text-align: center;
         }
     </style>
+     <div class="section-header">
+        <h1>Tabel Kehadiran</h1>
+    </div>
     <div class="card">
         <div class="card-header">
             <div>
@@ -111,7 +114,7 @@
 
         </div>
         <div class="card-footer">
-            <h6>Tabel tersebut dapat berubah sewaktu waktu</h6>
+            <h6 class="text-center">Tabel kehadiran dapat berubah sewaktu waktu</h6>
         </div>
     </div>
     <div class="card">
@@ -166,7 +169,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <h6>Tabel tersebut dapat berubah sewaktu waktu</h6>
+            <h6 class="text-center">Tabel kehadiran dapat berubah sewaktu waktu</h6>
         </div>
     </div>
     <script>

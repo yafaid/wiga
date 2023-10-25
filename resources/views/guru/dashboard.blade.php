@@ -59,6 +59,7 @@
         });
 
         function changeTanggal() {
+            
             $('#kode_mapel').val('');
             $('#kode_kelas').val('').trigger('change.select2');
             $('#tbody').html('<td colspan="5" class="text-center">Tidak ada data</td>');
