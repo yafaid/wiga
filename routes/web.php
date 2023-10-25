@@ -160,5 +160,7 @@ Route::middleware(['checkroles:2'])->group(function (){
 
 Route::middleware(['checkroles:3'])->group(function (){
     Route::get('/siswadb', [C_siswa::class, 'dbsiswa'])->name('dbsiswa');
-    Route::Post('/gurupresensi/show', [C_Prisensi_harian::class, 'showPrisensi'])->name('siswa.harian.show');
+    Route::get('/siswadb/profil', [C_siswa::class, 'profil'])->name('profilsiswa');
+    Route::Post('/siswadb/showkehadiran', [C_Prisensi_harian::class, 'showPrisensi'])->name('siswa.harian.show');
+
 });

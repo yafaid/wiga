@@ -63,7 +63,7 @@
                                 <div class="dropdown-title">Logged in {{ Auth::user()->last_login_at->diffInMinutes() }}
                                     min ago</div>
                             @endif
-                            <a href="{{ route('profilguru') }}" class="dropdown-item has-icon">
+                            <a href="{{ route('profilsiswa') }}" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
