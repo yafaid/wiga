@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h6>Lakukan Absen untuk Siswa</h6>
+                            <h6 class="text-center">Lakukan Absen untuk Siswa</h6>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <h6>Lihat Absen untuk Siswa</h6>
+                                <h6 class="text-center">Lihat Absen untuk Siswa</h6>
                             </div>
                         </div>
                     </a>
