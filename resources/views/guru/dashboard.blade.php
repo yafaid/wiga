@@ -11,43 +11,41 @@
     </div>
     <div class="section-body">
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6 col-12   ">
-                {{-- <div class="card card-statistic-1">
-                    <div class="card-icon bg-primary">
-                        <i class="far fa-user"></i>
-                    </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="card card-primary">
                     <div class="card-wrap" data-toggle="modal" data-target="#absensiModal">
                         <div class="card-header">
-                            <h4>Total Siswa Aktif</h4>
+                            <div class="row pb-2">
+                                <div class="col-4">
+                                    <img alt="image" src="assets/img/icon/cekmark.png" class="img-fluid">
+                                </div>
+                                <div class="col-8 d-flex align-items-center">
+                                    <h1 class="text-center">Absensi</h1>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
-                            {{ $totalsiswa }}
-                        </div>
-                    </div>
-                </div> --}}
-                <div class="card card-statistic-1">
-                    <div class="card-wrap" data-toggle="modal" data-target="#absensiModal">
-                        <div class="card-icon bg-primary">
-                            <i class="fas fa-clipboard-list"></i>
-                        </div>
-                        <div class="card-header">
-                            <h4>Absensi</h4>
-                        </div>
-                        <div class="card-body">
-                            Absen untuk Siswa
+                            <h6>Lakukan Absen untuk Siswa</h6>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="card">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="card card-primary">
                     <a href="{{ route('viewabsen') }}" style="text-decoration: none; color: inherit;">
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>View Absensi</h4>
+                                <div class="row pb-2">
+                                    <div class="col-4">
+                                        <img alt="image" src="assets/img/icon/ceklist.png" class="img-fluid">
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center">
+                                        <h1 class="text-center">View Absensi</h1>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body">
-                                Lihat Absen untuk Siswa
+                                <h6>Lihat Absen untuk Siswa</h6>
                             </div>
                         </div>
                     </a>

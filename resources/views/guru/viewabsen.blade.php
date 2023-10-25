@@ -1,5 +1,5 @@
 @extends('guru.master')
-@section('judul_halaman', 'Dashboard')
+@section('judul_halaman', 'Data Kehadiran')
 @section('header')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -51,9 +51,8 @@
     <div class="card">
         <div class="card-header">
             <div>
-                <h4>Data Kehadiran</h4>
+                <h4>Data Kehadiran Mapel</h4>
             </div>
-
         </div>
         <div class="card-body">
             <div class="d-flex justify-content-start mb-2 mt-2">
@@ -62,6 +61,15 @@
                         <option value="" disabled selected>Pilih Kelas</option>
                         @foreach ($kelas as $row)
                             <option value="{{ $row->id }}">{{ $row->kodekelas }} - {{ $row->jurusan->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <select name="mapel" class="form-control select2" id="mapel" onchange="kelasChange()">
+                        <option value="" disabled selected>Pilih Mapel</option>
+                        @foreach ($mapel as $row)
+                            <option value="{{ $row->id }}">{{ $row->kodemapel }} - {{ $row->mapel }}
                             </option>
                         @endforeach
                     </select>
@@ -103,7 +111,62 @@
 
         </div>
         <div class="card-footer">
-
+            <h6>Tabel tersebut dapat berubah sewaktu waktu</h6>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div>
+                <h4>Data Kehadiran Harian</h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-start mb-2 mt-2">
+                <div>
+                    <select name="kelas" class="form-control select2" id="kelas2" onchange="kelasChange2()">
+                        <option value="" disabled selected>Pilih Kelas</option>
+                        @foreach ($kelas as $row)
+                            <option value="{{ $row->id }}">{{ $row->kodekelas }} - {{ $row->jurusan->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <input type="text" class="form-control mx-3" name="dates" id="dates2" onchange="kelasChange2()">
+                </div>
+            </div>
+            <div class="table-responsive " id="tabel_id2">
+                <table class="table table-bordered" id="table-tahun">
+                    <thead>
+                        <tr>
+                            <td class="head" rowspan="2">NIS</td>
+                            <td class="head" rowspan="2">Nama Siswa</td>
+                            <td class="head" rowspan="2">L/P</td>
+                            <td class="head" colspan="4" class="text-center">Pertemuan</td>
+                            <td class="head" colspan="5" class="text-center">Jumlah</td>
+                        </tr>
+                        <tr>
+                            <td class="pertemuan">1</td>
+                            <td class="pertemuan">2</td>
+                            <td class="pertemuan">3</td>
+                            <td class="pertemuan">4</td>
+                            <td class="h">H</td>
+                            <td class="head">S</td>
+                            <td class="i">I</td>
+                            <td class="a">A</td>
+                            <!-- <td class="t">T</td> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="12" class="text-center">data tidak ada</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <h6>Tabel tersebut dapat berubah sewaktu waktu</h6>
         </div>
     </div>
     <script>
@@ -115,6 +178,45 @@
         function kelasChange() {
             var dates = $('#dates').val();
             var val = $('#kelas').val();
+            var mapel = $('#mapel').val();
+
+            if (dates == '') {
+                Swal.fire({
+                    title: 'Error!!',
+                    text: 'Tanggal tidak boleh kosong',
+                    icon: 'error',
+                    timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                    showConfirmButton: false // Menyembunyikan tombol OK
+                });
+            }
+            $.ajax({
+                url: "{{ route('guru.absenmapel.show') }}",
+                method: 'POST',
+                data: {
+                    id: val,
+                    dates: dates,
+                    mapel: mapel,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+
+                    $('#tabel_id').html(response.data);
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error!!',
+                        text: errorMessage,
+                        icon: 'error',
+                        timer: 2000, // Menutup setelah 2 detik (2000 ms)
+                        showConfirmButton: false // Menyembunyikan tombol OK
+                    });
+                }
+            });
+        }
+
+        function kelasChange2() {
+            var dates = $('#dates2').val();
+            var val = $('#kelas2').val();
 
             if (dates == '') {
                 Swal.fire({
@@ -135,7 +237,7 @@
                 },
                 success: function(response) {
 
-                    $('#tabel_id').html(response.data);
+                    $('#tabel_id2').html(response.data);
                 },
                 error: function(xhr, status, error) {
                     Swal.fire({

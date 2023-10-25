@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Guru;
 use App\Models\User;
 use App\Models\Kelas;
+use App\Models\Mapel;
 
 class C_guru extends Controller
 {
@@ -117,6 +118,7 @@ class C_guru extends Controller
     public function viewabsen()
     {
         $kelas = Kelas::get();
-        return view('guru.viewabsen', compact('kelas'));
+        $mapel = Mapel::get();
+        return view('guru.viewabsen', compact('kelas','mapel'));
     }
 }

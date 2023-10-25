@@ -62,7 +62,6 @@
                 <div>
                     <h4>Data Kehadiran</h4>
                 </div>
-
             </div>
             <div class="card-body">
                 <div class="d-flex justify-content-start mb-2 mt-2">
@@ -113,7 +112,6 @@
 
             </div>
             <div class="card-footer">
-
             </div>
         </div>
     </div>
@@ -137,7 +135,7 @@
                 });
             }
             $.ajax({
-                url: "{{ route('harian.show') }}",
+                url: "{{ route('guru.harian.show') }}",
                 method: 'POST',
                 data: {
                     id: val,

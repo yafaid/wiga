@@ -25,8 +25,8 @@
                     </div>
                     <div class="card-footer text-center">
                         <div class="font-weight-bold mb-2">Pengaturan</div>
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#changeUsernameModal">Ganti
-                            Username</button>
+                        {{-- <button class="btn btn-primary" data-toggle="modal" data-target="#changeUsernameModal">Ganti
+                            Username</button> --}}
                         <button class="btn btn-primary" data-toggle="modal" data-target="#changePasswordModal">Ganti
                             Password</button>
                     </div>

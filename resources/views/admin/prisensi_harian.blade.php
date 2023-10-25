@@ -7,7 +7,7 @@
 @endsection
 @section('konten')
     <div class="section-header">
-        <h1>Presensi</h1>
+        <h1>Presensi Harian</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="{{ route('dbadmin') }}">Dashboard</a></div>
             <div class="breadcrumb-item">Data Absensi</div>

@@ -52,7 +52,7 @@
         <h1>Tabel Kehadiran Mapel</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="{{ route('dbadmin') }}">Dashboard</a></div>
-            <div class="breadcrumb-item active"><a href="{{ route('presensi.harian') }}">Presensi Harian</a></div>
+            <div class="breadcrumb-item active"><a href="{{ route('presensi') }}">Presensi Mapel</a></div>
             <div class="breadcrumb-item">Tabel Kehadiran Mapel</div>
         </div>
     </div>
