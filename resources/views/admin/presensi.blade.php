@@ -1,5 +1,5 @@
 @extends('admin.master')
-@section('judul_halaman', 'Pertemuan')
+@section('judul_halaman', 'Presensi Mapel')
 @section('header')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

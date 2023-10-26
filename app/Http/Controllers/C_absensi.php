@@ -12,11 +12,11 @@ use App\Models\Kelas;
 
 class C_absensi extends Controller
 {
-    function index(Request  $request)
+    function index(Request $request)
     {
         $kelas_id  = $request->input('kelas_id');
 
-        $data = Siswa::where('kelas_id', $kelas_id);
+        $data = Siswa::where('kelas_id', $kelas_id)->where('is_active', 1);
         $html = '';
 
         if (!$data->count() == 0) {

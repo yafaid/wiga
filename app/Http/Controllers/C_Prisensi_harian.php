@@ -22,7 +22,7 @@ class C_Prisensi_harian extends Controller
 
     function getSiswa(Request $request)
     {
-        $data = Siswa::where('kelas_id', $request->kelas_id);
+        $data = Siswa::where('kelas_id', $request->kelas_id)->where('is_active', 1);
 
         $html = '';
         if (!$data->count() == 0) {
