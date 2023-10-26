@@ -43,12 +43,70 @@
             <div class="card-footer">
             </div>
         </div>
+        <div class="card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h4>Data Siswa Tidak Aktif</h4>
+                <div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover" id="table-siswa2">
+                    <thead>
+                        <tr>
+                            <th>NIS</th>
+                            <th>Nama</th>
+                            <th>JK</th>
+                            <th>Kelas</th>
+                            <th>Jurusan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
     </div>
     <script>
         $(document).ready(function() {
             var table = $('#table-siswa').DataTable({
                 ajax: {
                     url: "{{ route('get-siswa') }}",
+                    method: "GET",
+                    responsive: true,
+                    theme: "santafe",
+                    dataSrc: ""
+                },
+                columns: [{
+                        data: 'nisn'
+                    },
+                    {
+                        data: 'nama'
+                    },
+                    {
+                        data: 'jeniskelamin'
+                    },
+                    {
+                        data: 'kelas.kodekelas'
+                    },
+                    {
+                        data: 'jurusan.kodejur'
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            return '<button class="btn btn-primary edit" data-id="' + data.id +
+                                '">Edit</button>' +
+                                '<button class="btn btn-danger delete" data-id="' + data.id +
+                                '">Delete</button>';
+                        }
+                    }
+                ]
+            });
+
+            var table = $('#table-siswa2').DataTable({
+                ajax: {
+                    url: "{{ route('get-siswa2') }}",
                     method: "GET",
                     responsive: true,
                     theme: "santafe",
@@ -155,8 +213,8 @@
                     method: 'GET',
                     success: function(response) {
                         // Isi form modal edit dengan data yang diperoleh
-                        $('#editId').val(response.id); 
-                        $('#editNisn').val(response.nisn);                                                                
+                        $('#editId').val(response.id);
+                        $('#editNisn').val(response.nisn);
                         $('#editNama').val(response.nama);
                         $('#editJK').val(response.jeniskelamin);
                         $('#editStatus').val(response.is_active);
@@ -181,12 +239,12 @@
 
                 // Prepare the data to be sent
                 var data = {
-                        nisn: nisn,
-                        nama: nama,
-                        is_active: is_active,
-                        jeniskelamin: jk,
-                        kelas_id: kelas,
-                        jurusan_id: jurusan
+                    nisn: nisn,
+                    nama: nama,
+                    is_active: is_active,
+                    jeniskelamin: jk,
+                    kelas_id: kelas,
+                    jurusan_id: jurusan
                 };
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 // Send an AJAX request to update the Kelas
@@ -325,7 +383,8 @@
                         <select class="form-control" id="tambahKelas" name="kelas">
                             <option value="" disabled selected>Pilih Kelas</option>
                             @foreach ($kelas as $row)
-                                <option value="{{ $row->id }}">{{ $row->kodekelas }}{{ $row->jurusan->kodejur }}</option>
+                                <option value="{{ $row->id }}">{{ $row->kodekelas }}{{ $row->jurusan->kodejur }}
+                                </option>
                             @endforeach
                         </select>
                     </div>

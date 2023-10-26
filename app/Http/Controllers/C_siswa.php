@@ -28,6 +28,14 @@ class C_siswa extends Controller
         $siswa = Siswa::with('kelas', 'jurusan')->where('is_active', "1")->get();
         return response()->json($siswa);
     }
+
+    public function getSiswa2()
+    {
+        $siswa = Siswa::all();
+        $siswa = Siswa::with('kelas', 'jurusan')->where('is_active', "2")->get();
+        return response()->json($siswa);
+    }
+    
     public function storeSiswa(Request $request)
     {
         // Validasi data $request disini

@@ -114,6 +114,7 @@ class C_Prisensi_harian extends Controller
         $data = Presensi_harian::join('siswa', 'presensi_harian.siswa_id', '=', 'siswa.id')
             ->where('presensi_harian.kelas_id', $id)
             ->whereBetween('presensi_harian.tanggal', [$startDate, $endDate])
+            ->where('siswa.is_active', 1)
             ->orderBy('presensi_harian.tanggal', 'ASC');
         $total = 0;
         $arrayData = [];
@@ -150,10 +151,6 @@ class C_Prisensi_harian extends Controller
             $arrayData[$key]['total'] = $dataCount->total;
             $total++;
         }
-
-
-
-
 
         $thead = '';
         $dataSiswa = '';

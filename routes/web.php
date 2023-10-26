@@ -113,6 +113,7 @@ Route::middleware(['checkroles:1'])->group(function (){
     //SISWA
     Route::get('/siswa', [C_siswa::class, 'siswa'])->name('siswa');
     Route::get('/get-siswa', [C_siswa::class, 'getSiswa'])->name('get-siswa');
+    Route::get('/get-siswa2', [C_siswa::class, 'getSiswa2'])->name('get-siswa2');
     Route::post('/siswaadd', [C_siswa::class, 'storeSiswa'])->name('siswa.add'); 
     Route::get('/siswa/{id}', [C_siswa::class, 'showSiswa'])->name('siswa.show');
     Route::post('/siswa/{id}', [C_siswa::class, 'updateSiswa'])->name('siswa.edit');
