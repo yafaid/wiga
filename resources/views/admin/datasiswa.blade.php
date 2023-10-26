@@ -58,7 +58,6 @@
                             <th>JK</th>
                             <th>Kelas</th>
                             <th>Jurusan</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                 </table>
@@ -126,15 +125,6 @@
                     },
                     {
                         data: 'jurusan.kodejur'
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return '<button class="btn btn-primary edit" data-id="' + data.id +
-                                '">Edit</button>' +
-                                '<button class="btn btn-danger delete" data-id="' + data.id +
-                                '">Delete</button>';
-                        }
                     }
                 ]
             });
