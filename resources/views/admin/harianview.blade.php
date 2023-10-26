@@ -135,7 +135,7 @@
                 });
             }
             $.ajax({
-                url: "{{ route('guru.harian.show') }}",
+                url: "{{ route('harian.show') }}",
                 method: 'POST',
                 data: {
                     id: val,

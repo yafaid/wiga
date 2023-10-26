@@ -54,6 +54,16 @@
     <div class="section-body">
         <div class="card">
             <div class="card-header">
+                <h3>Halo , {{ Auth::user()->name }}</h3>
+            </div>
+            <div class="card-body">
+                <h5>Data Diri</h5>
+                <h6>Nama : {{ Auth::user()->name }}</h6>
+                <h6>Posisi : {{ Auth::user()->role->name }}</h6>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
                 <div>
                     <h4>Data Kehadiran</h4>
                 </div>
